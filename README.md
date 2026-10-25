@@ -2,7 +2,7 @@
 
 Personal portfolio featuring interaction design, physical products, service design, and interactive web experiments.
 
-Website: https://albedovo.github.io/portfolio/
+Website: https://portfolio.xiwenyan.top/ (bio: https://bio.xiwenyan.top/)
 
 ## Edit
 
