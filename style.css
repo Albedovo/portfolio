@@ -145,3 +145,4 @@ dialog::backdrop{background:#241a4acc}
 @media(prefers-reduced-motion:reduce){.hit-ring,.judge.pop{animation:none}}
 @media(max-width:800px){.circle-link{display:none}.combo{top:6px;bottom:auto;font-size:10px;right:20px;z-index:2}}
 @media(max-width:480px){nav a[href="#making"],nav a[href="#recognition"]{display:none}}
+.hobbies{margin-top:16px}
