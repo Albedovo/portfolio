@@ -146,3 +146,16 @@ dialog::backdrop{background:#241a4acc}
 @media(max-width:800px){.circle-link{display:none}.combo{top:6px;bottom:auto;font-size:10px;right:20px;z-index:2}}
 @media(max-width:480px){nav a[href="#making"],nav a[href="#recognition"]{display:none}}
 .hobbies{margin-top:16px}
+.hobby-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.hobby-card{background:#fff;border:3px solid var(--ink);border-radius:18px;padding:28px;box-shadow:8px 8px 0 var(--pink);display:flex;flex-direction:column;gap:14px;transition:transform .2s,box-shadow .2s}
+.hobby-card.cooking{box-shadow:8px 8px 0 var(--cyan)}
+.hobby-card:hover{transform:translate(-3px,-3px);box-shadow:12px 12px 0 var(--ink)}
+.hobby-icon{font-size:30px;letter-spacing:8px;color:var(--pink);-webkit-text-stroke:1px var(--ink)}
+.hobby-card small{font-size:10px;letter-spacing:1.4px;font-weight:700}
+.hobby-card h3{font-family:var(--display);font-weight:400;font-size:clamp(34px,3.6vw,52px);line-height:1;letter-spacing:-1px}
+.hobby-tags{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px}
+.hobby-tags li{border:2px solid var(--ink);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;background:var(--yellow)}
+.hobby-card.cooking .hobby-tags li{background:var(--cyan)}
+.hobby-card p{font-size:15px;line-height:1.75}
+.hobby-card .hobby-q{font-size:12px;color:var(--muted);border-top:2px dashed var(--ink);padding-top:12px;margin-top:auto}
+@media(max-width:800px){.hobby-grid{grid-template-columns:1fr}.hobby-card{padding:20px}.hobby-card p{font-size:13px}}
