@@ -18,10 +18,13 @@ const experiments=[
 {id:'serpentine',name:'Serpentine',label:'RHYTHM SNAKE / COLLABORATIVE',zhlabel:'节奏贪吃蛇 / 合作作业',url:'https://serpentine-4cws.onrender.com/',desc:'A rhythm snake game with levels, different snake types, and difficulty settings. Made as a collaborative assignment.',zhdesc:'结合关卡、不同蛇型与难度设置的节奏贪吃蛇游戏。本项目为合作作业。',art:'<div class="play-cover serpentine"><div class="snake-shape"></div><div class="gem"></div></div>'}
 ];
 const $=s=>document.querySelector(s);const t=(en,zh)=>lang==='en'?en:zh;
-function renderProjects(filter='all'){
- const list=projects.filter(p=>filter==='all'||p.cat===filter);$('#count').textContent=`0${list.length} ${t('PROJECTS','个项目')}`;
- $('#projects').innerHTML=list.map(p=>`<button class="project" data-project="${p.id}" aria-label="${t('Explore','查看')} ${p.name}"><div class="visual ${p.id==='vtt'?'tool-visual':''}">${p.image?`<img src="assets/${p.image}" alt="${p.name} — ${t(p.desc,p.zhdesc)}" loading="lazy">`:'<div class="file"><span>SUBTITLES</span><b>.vtt</b></div><span class="file-arrow">→</span><div class="file"><span>LYRICS</span><b>.lrc</b></div>'}<span class="arrow" aria-hidden="true">↗</span></div><div class="project-meta"><h3>${p.name}</h3><small>${t(p.label,p.zhlabel)}</small></div><p>${t(p.desc,p.zhdesc)}</p></button>`).join('');
- document.querySelectorAll('[data-project]').forEach(b=>b.addEventListener('click',()=>openProject(b.dataset.project)));
+const interaction=['inn','what','cityweave','vtt'],making=['subform','shavi'];
+const card=p=>`<button class="project" data-project="${p.id}" aria-label="${t('Explore','查看')} ${p.name}"><div class="visual ${p.id==='vtt'?'tool-visual':''}">${p.image?`<img src="assets/${p.image}" alt="${p.name} — ${t(p.desc,p.zhdesc)}" loading="lazy">`:'<div class="file"><span>SUBTITLES</span><b>.vtt</b></div><span class="file-arrow">→</span><div class="file"><span>LYRICS</span><b>.lrc</b></div>'}<span class="arrow" aria-hidden="true">↗</span></div><div class="project-meta"><h3>${p.name}</h3><small>${t(p.label,p.zhlabel)}</small></div><p>${t(p.desc,p.zhdesc)}</p></button>`;
+function renderProjects(){
+ const pick=ids=>ids.map(id=>projects.find(p=>p.id===id));
+ $('#projects').innerHTML=pick(interaction).map(card).join('');
+ $('#making-grid').innerHTML=pick(making).map(card).join('');
+ document.querySelectorAll('#projects [data-project],#making-grid [data-project]').forEach(b=>b.addEventListener('click',()=>openProject(b.dataset.project)));
 }
 function renderMini(){
  $('#mini-grid').innerHTML=smallWorks.map(p=>`<button class="mini" data-project="${p.id}" aria-label="${t('Explore','查看')} ${p.name}"><div class="mini-visual"><img src="assets/${p.image}" alt="${p.name} — ${t(p.desc,p.zhdesc)}" loading="lazy"></div><div><small>${t(p.label,p.zhlabel)} · ${p.date}</small><h3>${p.name}</h3><p>${t(p.desc,p.zhdesc)}</p></div></button>`).join('');
@@ -38,8 +41,7 @@ function openExperiment(id){const p=experiments.find(p=>p.id===id);showDialog(`<
  $('#load-demo').addEventListener('click',()=>{const frame=document.createElement('iframe');frame.src=p.url;frame.title=p.name;frame.className='demo-frame';frame.allow='camera; microphone; autoplay; fullscreen';frame.referrerPolicy='strict-origin-when-cross-origin';$('.demo-launch').replaceWith(frame)},{once:true});
 }
 $('.close').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()}});dialog.addEventListener('close',()=>{$('#dialog-content').innerHTML='';document.body.classList.remove('modal-open');returnFocus?.focus()});
-document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b))});renderProjects(b.dataset.filter)}));
-$('#language').addEventListener('click',()=>{lang=lang==='en'?'zh':'en';document.documentElement.lang=lang==='en'?'en':'zh-CN';document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.dataset[lang]);$('#language').setAttribute('aria-label',t('Switch to Chinese','切换至英文'));$('#language').textContent=lang==='en'?'中 / EN':'中文 / EN';renderProjects($('.filters .active').dataset.filter);renderMini();renderPlay()});
+$('#language').addEventListener('click',()=>{lang=lang==='en'?'zh':'en';document.documentElement.lang=lang==='en'?'en':'zh-CN';document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.dataset[lang]);$('#language').setAttribute('aria-label',t('Switch to Chinese','切换至英文'));$('#language').textContent=lang==='en'?'中 / EN':'中文 / EN';renderProjects();renderMini();renderPlay()});
 $('#copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText('albeedovo@gmail.com');$('#copy-status').textContent=t('Email copied. Say hello!','邮箱已复制，期待你的来信！');burst($('#copy'))}catch{$('#copy-status').textContent='albeedovo@gmail.com'}});
 renderProjects();renderMini();renderPlay();
 // Small moments of play: confetti shapes, a curious "e", tilting cards.
@@ -50,3 +52,15 @@ function burst(origin,n=18){if(calm||!origin)return;const r=origin.getBoundingCl
 const art=$('.hero-art');art.addEventListener('click',()=>{art.classList.remove('spin');void art.offsetWidth;art.classList.add('spin');burst(art,24)});
 if(!calm){$('.hero').addEventListener('pointermove',e=>{const r=art.getBoundingClientRect(),x=(e.clientX-(r.left+r.width/2))/40,y=(e.clientY-(r.top+r.height/2))/40;art.style.setProperty('--px',Math.max(-12,Math.min(12,x))+'px');art.style.setProperty('--py',Math.max(-12,Math.min(12,y))+'px')});
  document.addEventListener('pointermove',e=>{const c=e.target.closest?.('.project,.mini');if(!c)return;const r=c.getBoundingClientRect();c.style.setProperty('--rx',((e.clientY-r.top)/r.height-.5)*-3+'deg');c.style.setProperty('--ry',((e.clientX-r.left)/r.width-.5)*3+'deg')})}
+
+// Hero rhythm lane: notes slide toward the ring; hit them by click or Space/F/J.
+const lane=$('#beat-lane');let combo=0,notes=[];
+function judge(text,cls){const j=$('#judge');j.textContent=text;j.className='judge '+cls;void j.offsetWidth;j.classList.add('pop');$('#combo').textContent='COMBO '+combo}
+function hit(n){const ring=lane.querySelector('.hit-ring').getBoundingClientRect(),r=n.getBoundingClientRect(),d=Math.abs((r.left+r.width/2)-(ring.left+ring.width/2));
+ combo=d<26?combo+1:d<70?combo+1:0;judge(d<26?'PERFECT!':d<70?'GREAT':'MISS',d<26?'perfect':d<70?'great':'miss');if(d<70)burst(n,8);n.remove();notes=notes.filter(x=>x!==n)}
+function spawn(){if(document.hidden)return;const n=document.createElement('button');const k=Math.floor(Math.random()*4);n.className='note n'+k;n.type='button';n.tabIndex=-1;n.setAttribute('aria-label','Note');n.textContent=['♪','★','♥','◆'][k];
+ n.addEventListener('click',()=>hit(n));lane.appendChild(n);notes.push(n);
+ const a=n.animate([{left:'100%'},{left:'-60px'}],{duration:3200,easing:'linear'});a.onfinish=()=>{if(n.isConnected){n.remove();notes=notes.filter(x=>x!==n);if(combo){combo=0;judge('MISS','miss')}}}}
+let laneOn=false;new IntersectionObserver(e=>laneOn=e[0].isIntersecting).observe(lane);
+if(!calm){setInterval(()=>laneOn&&spawn(),850)}else{lane.classList.add('still')}
+lane.addEventListener('keydown',e=>{if(![' ','f','j','F','J'].includes(e.key))return;e.preventDefault();const ring=lane.querySelector('.hit-ring').getBoundingClientRect();const n=notes.filter(x=>x.isConnected).sort((a,b)=>Math.abs(a.getBoundingClientRect().left-ring.left)-Math.abs(b.getBoundingClientRect().left-ring.left))[0];if(n)hit(n)});
