@@ -60,9 +60,12 @@ document.documentElement.style.setProperty('--spb',SPB+'s');
 function lockToBeat(){if(calm||!document.getAnimations)return;document.getAnimations().forEach(a=>{if(/^beat-/.test(a.animationName||'')&&a.playState!=='paused')a.startTime=t0})}
 requestAnimationFrame(lockToBeat);let resizeTimer;addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(lockToBeat,200)});
 
-// Soundtrack: a tiny Web Audio loop in A major (A–E–F#m–D), off until the visitor turns it on.
+// Soundtrack: a tiny Web Audio loop in A major (A–E–F#m–D). On by default; browsers only let it start
+// after the visitor's first tap, click or key press, and turning it off is remembered.
 const ROOTS=[45,40,42,38],THIRDS=[4,4,3,4],mtof=m=>440*2**((m-69)/12);
-let ctx,master,noise,soundOn=false,audioOffset=0,nextAudioStep=0;
+let ctx,master,noise,soundOn=true,audioOffset=0,nextAudioStep=0;
+try{soundOn=localStorage.getItem('echo-sound')!=='off'}catch{}
+const playing=()=>soundOn&&ctx?.state==='running';
 function initAudio(){ctx=new(window.AudioContext||window.webkitAudioContext)();master=ctx.createGain();master.gain.value=.28;master.connect(ctx.destination);
  noise=ctx.createBuffer(1,ctx.sampleRate,ctx.sampleRate);const d=noise.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1}
 function env(t,peak,decay){const g=ctx.createGain();g.gain.setValueAtTime(peak,t);g.gain.exponentialRampToValueAtTime(.001,t+decay);g.connect(master);return g}
@@ -75,13 +78,17 @@ function scheduleAudio(now){const lat=ctx.outputLatency||ctx.baseLatency||0;
   if(s%2)hiss(t,'highpass',7000,.12,.04);
   if([0,3,4,6].includes(pos))tone(t,mtof(root+(pos===6?12:0)),'triangle',.38,.22);
   if(pos===3||pos===7)[12,12+THIRDS[bar],19].forEach(i=>tone(t,mtof(root+i),'triangle',.05,.2))}}
-function hitSound(k){if(!soundOn)return;const bar=Math.floor(songTime()/(4*SPB))%4;tone(ctx.currentTime,mtof(ROOTS[bar]+24+[0,THIRDS[bar],7,12][k]),'square',.08,.16)}
+function hitSound(k){if(!playing())return;const bar=Math.floor(songTime()/(4*SPB))%4;tone(ctx.currentTime,mtof(ROOTS[bar]+24+[0,THIRDS[bar],7,12][k]),'square',.08,.16)}
 const soundBtn=$('#sound');
 function labelSound(){soundBtn.setAttribute('aria-pressed',soundOn);soundBtn.querySelector('span').textContent=soundOn?t('Sound on','声音 开'):t('Sound off','声音 关')}
 async function setSound(on){if(on&&!ctx)initAudio();soundOn=on;
  if(on){await ctx.resume();audioOffset=ctx.currentTime-songTime();nextAudioStep=Math.ceil((songTime()+.05)/STEP)}else ctx?.suspend();
  document.documentElement.classList.toggle('sound-on',on);labelSound();lockToBeat()}
-soundBtn.addEventListener('click',()=>setSound(!soundOn));
+// If the label says "on" but the browser hasn't let audio start yet, a click starts it rather than turning it off.
+soundBtn.addEventListener('click',()=>{const on=soundOn&&!playing()?true:!soundOn;try{localStorage.setItem('echo-sound',on?'on':'off')}catch{}setSound(on)});
+function unlockAudio(e){if(e.target.closest?.('#sound'))return;['pointerdown','keydown'].forEach(n=>removeEventListener(n,unlockAudio,true));if(soundOn&&!playing())setSound(true)}
+['pointerdown','keydown'].forEach(n=>addEventListener(n,unlockAudio,true));
+labelSound();if(soundOn)setSound(true);
 document.addEventListener('visibilitychange',()=>{if(!soundOn)return;if(document.hidden)ctx.suspend();else setSound(true)});
 
 // Hero rhythm lane: notes arrive on the beat; tap anywhere on the lane, or press Space/F/J, as they reach the ring.
@@ -101,7 +108,7 @@ function score(n){const dt=Math.abs(songTime()-n.t);n.done=true;n.el.classList.a
 function setFever(on){if(document.documentElement.classList.contains('fever')===on)return;document.documentElement.classList.toggle('fever',on);lockToBeat()}
 function spawn(i){const k=(Math.floor(i/8)+i)%4,el=document.createElement('span');el.className='note n'+k;el.setAttribute('aria-hidden','true');el.textContent=['♪','★','♥','◆'][k];lane.appendChild(el);notes.push({el,k,t:i*STEP})}
 function frame(){const now=songTime();
- if(soundOn&&!document.hidden)scheduleAudio(now);
+ if(playing()&&!document.hidden)scheduleAudio(now);
  if(!calm){
   while(nextStep*STEP<=now+TRAVEL){const i=nextStep++;if(laneOn&&!document.hidden&&CHART[i%CHART.length]==='x'&&(laneW>560||i%2===0))spawn(i)}// narrow lanes: quarter notes only, so notes never overlap
   notes=notes.filter(n=>{const x=ringX+(n.t-now)/TRAVEL*(laneW-ringX+40);
