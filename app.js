@@ -41,26 +41,79 @@ function openExperiment(id){const p=experiments.find(p=>p.id===id);showDialog(`<
  $('#load-demo').addEventListener('click',()=>{const frame=document.createElement('iframe');frame.src=p.url;frame.title=p.name;frame.className='demo-frame';frame.allow='camera; microphone; autoplay; fullscreen';frame.referrerPolicy='strict-origin-when-cross-origin';$('.demo-launch').replaceWith(frame)},{once:true});
 }
 $('.close').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()}});dialog.addEventListener('close',()=>{$('#dialog-content').innerHTML='';document.body.classList.remove('modal-open');returnFocus?.focus()});
-$('#language').addEventListener('click',()=>{lang=lang==='en'?'zh':'en';document.documentElement.lang=lang==='en'?'en':'zh-CN';document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.dataset[lang]);$('#language').setAttribute('aria-label',t('Switch to Chinese','切换至英文'));$('#language').textContent=lang==='en'?'中 / EN':'中文 / EN';renderProjects();renderMini();renderPlay()});
+$('#language').addEventListener('click',()=>{lang=lang==='en'?'zh':'en';document.documentElement.lang=lang==='en'?'en':'zh-CN';document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.dataset[lang]);$('#language').setAttribute('aria-label',t('Switch to Chinese','切换至英文'));$('#language').textContent=lang==='en'?'中 / EN':'中文 / EN';renderProjects();renderMini();renderPlay();labelSound()});
 $('#copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText('albeedovo@gmail.com');$('#copy-status').textContent=t('Email copied. Say hello!','邮箱已复制，期待你的来信！');burst($('#copy'))}catch{$('#copy-status').textContent='albeedovo@gmail.com'}});
 renderProjects();renderMini();renderPlay();
 // Small moments of play: confetti shapes, a curious "e", tilting cards.
 const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-function burst(origin,n=18){if(calm||!origin)return;const r=origin.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,shapes=['●','◎','■','◆','▲','✦'],colors=['#dbfa73','#35533a','#e47d36','#e9c9f0','#20251e','#8fb6ff'];
+function burst(origin,n=18){if(calm||!origin)return;const r=origin.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,shapes=['●','◎','■','◆','▲','✦'],colors=['#ff4f9a','#31d7f0','#ffe14a','#7a5cff','#1b1530','#b6a4ff'];
  for(let i=0;i<n;i++){const s=document.createElement('span');s.className='confetti';s.textContent=shapes[i%shapes.length];s.style.color=colors[i%colors.length];s.style.left=cx+'px';s.style.top=cy+'px';document.body.appendChild(s);
   const a=Math.random()*Math.PI*2,d=80+Math.random()*160;s.animate([{transform:'translate(-50%,-50%) scale(.4) rotate(0)',opacity:1},{transform:`translate(calc(-50% + ${Math.cos(a)*d}px),calc(-50% + ${Math.sin(a)*d+120}px)) scale(1.1) rotate(${Math.random()*540-270}deg)`,opacity:0}],{duration:900+Math.random()*500,easing:'cubic-bezier(.2,.7,.3,1)'}).onfinish=()=>s.remove()}}
 const art=$('.hero-art');art.addEventListener('click',()=>{art.classList.remove('spin');void art.offsetWidth;art.classList.add('spin');burst(art,24)});
 if(!calm){$('.hero').addEventListener('pointermove',e=>{const r=art.getBoundingClientRect(),x=(e.clientX-(r.left+r.width/2))/40,y=(e.clientY-(r.top+r.height/2))/40;art.style.setProperty('--px',Math.max(-12,Math.min(12,x))+'px');art.style.setProperty('--py',Math.max(-12,Math.min(12,y))+'px')});
  document.addEventListener('pointermove',e=>{const c=e.target.closest?.('.project,.mini');if(!c)return;const r=c.getBoundingClientRect();c.style.setProperty('--rx',((e.clientY-r.top)/r.height-.5)*-3+'deg');c.style.setProperty('--ry',((e.clientX-r.left)/r.width-.5)*3+'deg')})}
 
-// Hero rhythm lane: notes slide toward the ring; hit them by click or Space/F/J.
-const lane=$('#beat-lane');let combo=0,notes=[];
-function judge(text,cls){const j=$('#judge');j.textContent=text;j.className='judge '+cls;void j.offsetWidth;j.classList.add('pop');$('#combo').textContent='COMBO '+combo}
-function hit(n){const ring=lane.querySelector('.hit-ring').getBoundingClientRect(),r=n.getBoundingClientRect(),d=Math.abs((r.left+r.width/2)-(ring.left+ring.width/2));
- combo=d<26?combo+1:d<70?combo+1:0;judge(d<26?'PERFECT!':d<70?'GREAT':'MISS',d<26?'perfect':d<70?'great':'miss');if(d<70)burst(n,8);n.remove();notes=notes.filter(x=>x!==n)}
-function spawn(){if(document.hidden)return;const n=document.createElement('button');const k=Math.floor(Math.random()*4);n.className='note n'+k;n.type='button';n.tabIndex=-1;n.setAttribute('aria-label','Note');n.textContent=['♪','★','♥','◆'][k];
- n.addEventListener('click',()=>hit(n));lane.appendChild(n);notes.push(n);
- const a=n.animate([{left:'100%'},{left:'-60px'}],{duration:3200,easing:'linear'});a.onfinish=()=>{if(n.isConnected){n.remove();notes=notes.filter(x=>x!==n);if(combo){combo=0;judge('MISS','miss')}}}}
-let laneOn=false;new IntersectionObserver(e=>laneOn=e[0].isIntersecting).observe(lane);
-if(!calm){setInterval(()=>laneOn&&spawn(),850)}else{lane.classList.add('still')}
-lane.addEventListener('keydown',e=>{if(![' ','f','j','F','J'].includes(e.key))return;e.preventDefault();const ring=lane.querySelector('.hit-ring').getBoundingClientRect();const n=notes.filter(x=>x.isConnected).sort((a,b)=>Math.abs(a.getBoundingClientRect().left-ring.left)-Math.abs(b.getBoundingClientRect().left-ring.left))[0];if(n)hit(n)});
+// One beat clock for the whole page: the lane's notes, the soundtrack and every pulsing element share it.
+const BPM=112,SPB=60/BPM,STEP=SPB/2,TRAVEL=4*SPB,t0=performance.now(),songTime=()=>(performance.now()-t0)/1000;
+document.documentElement.style.setProperty('--spb',SPB+'s');
+// CSS animations named beat-* are pinned to the clock's origin so they land on the same beat as the music.
+function lockToBeat(){if(calm||!document.getAnimations)return;document.getAnimations().forEach(a=>{if(/^beat-/.test(a.animationName||'')&&a.playState!=='paused')a.startTime=t0})}
+requestAnimationFrame(lockToBeat);let resizeTimer;addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(lockToBeat,200)});
+
+// Soundtrack: a tiny Web Audio loop in A major (A–E–F#m–D), off until the visitor turns it on.
+const ROOTS=[45,40,42,38],THIRDS=[4,4,3,4],mtof=m=>440*2**((m-69)/12);
+let ctx,master,noise,soundOn=false,audioOffset=0,nextAudioStep=0;
+function initAudio(){ctx=new(window.AudioContext||window.webkitAudioContext)();master=ctx.createGain();master.gain.value=.28;master.connect(ctx.destination);
+ noise=ctx.createBuffer(1,ctx.sampleRate,ctx.sampleRate);const d=noise.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1}
+function env(t,peak,decay){const g=ctx.createGain();g.gain.setValueAtTime(peak,t);g.gain.exponentialRampToValueAtTime(.001,t+decay);g.connect(master);return g}
+function tone(t,freq,type,peak,decay,glideTo){const o=ctx.createOscillator();o.type=type;o.frequency.setValueAtTime(freq,t);if(glideTo)o.frequency.exponentialRampToValueAtTime(glideTo,t+decay*.5);o.connect(env(t,peak,decay));o.start(t);o.stop(t+decay+.02)}
+function hiss(t,type,freq,peak,decay){const s=ctx.createBufferSource(),f=ctx.createBiquadFilter();s.buffer=noise;f.type=type;f.frequency.value=freq;s.connect(f).connect(env(t,peak,decay));s.start(t);s.stop(t+decay+.02)}
+function scheduleAudio(now){const lat=ctx.outputLatency||ctx.baseLatency||0;
+ while(nextAudioStep*STEP<now+.15){const s=nextAudioStep++,t=s*STEP+audioOffset-lat,pos=s%8,bar=Math.floor(s/8)%4,root=ROOTS[bar];if(t<ctx.currentTime)continue;
+  if(pos===0||pos===4||(bar===3&&pos===7))tone(t,150,'sine',.9,.28,45);
+  if(pos===2||pos===6)hiss(t,'bandpass',1800,.45,.13);
+  if(s%2)hiss(t,'highpass',7000,.12,.04);
+  if([0,3,4,6].includes(pos))tone(t,mtof(root+(pos===6?12:0)),'triangle',.38,.22);
+  if(pos===3||pos===7)[12,12+THIRDS[bar],19].forEach(i=>tone(t,mtof(root+i),'triangle',.05,.2))}}
+function hitSound(k){if(!soundOn)return;const bar=Math.floor(songTime()/(4*SPB))%4;tone(ctx.currentTime,mtof(ROOTS[bar]+24+[0,THIRDS[bar],7,12][k]),'square',.08,.16)}
+const soundBtn=$('#sound');
+function labelSound(){soundBtn.setAttribute('aria-pressed',soundOn);soundBtn.querySelector('span').textContent=soundOn?t('Sound on','声音 开'):t('Sound off','声音 关')}
+async function setSound(on){if(on&&!ctx)initAudio();soundOn=on;
+ if(on){await ctx.resume();audioOffset=ctx.currentTime-songTime();nextAudioStep=Math.ceil((songTime()+.05)/STEP)}else ctx?.suspend();
+ document.documentElement.classList.toggle('sound-on',on);labelSound();lockToBeat()}
+soundBtn.addEventListener('click',()=>setSound(!soundOn));
+document.addEventListener('visibilitychange',()=>{if(!soundOn)return;if(document.hidden)ctx.suspend();else setSound(true)});
+
+// Hero rhythm lane: notes arrive on the beat; tap anywhere on the lane, or press Space/F/J, as they reach the ring.
+const lane=$('#beat-lane'),ringEl=lane.querySelector('.hit-ring');
+// Four bars of eighth notes, looped: x = note. Starts sparse, then picks up.
+const CHART=['x...x...','x.x.x.x.','x.x.x.xx','x..xx.x.'].join('');
+let combo=0,best=0,notes=[],nextStep=0,laneOn=false,ringX=0,laneW=0;
+try{best=+localStorage.getItem('echo-best-combo')||0}catch{}
+const comboText=()=>`COMBO ${combo}${best?` · BEST ${best}`:''}`;$('#combo').textContent=comboText();
+function measure(){const l=lane.getBoundingClientRect(),r=ringEl.getBoundingClientRect();laneW=l.width;ringX=r.left+r.width/2-l.left}
+measure();new ResizeObserver(measure).observe(lane);
+function judge(text,cls){const j=$('#judge');j.textContent=text;j.className='judge '+cls;void j.offsetWidth;j.classList.add('pop');$('#combo').textContent=comboText()}
+function score(n){const dt=Math.abs(songTime()-n.t);n.done=true;n.el.classList.add('hit');
+ if(dt<=.13){combo++;if(combo>best){best=combo;try{localStorage.setItem('echo-best-combo',best)}catch{}}hitSound(n.k);burst(n.el,combo%10===0?24:8);judge(dt<=.06?'PERFECT!':'GREAT',dt<=.06?'perfect':'great')}
+ else{combo=0;judge('MISS','miss')}
+ setFever(combo>=8)}
+function setFever(on){if(document.documentElement.classList.contains('fever')===on)return;document.documentElement.classList.toggle('fever',on);lockToBeat()}
+function spawn(i){const k=(Math.floor(i/8)+i)%4,el=document.createElement('span');el.className='note n'+k;el.setAttribute('aria-hidden','true');el.textContent=['♪','★','♥','◆'][k];lane.appendChild(el);notes.push({el,k,t:i*STEP})}
+function frame(){const now=songTime();
+ if(soundOn&&!document.hidden)scheduleAudio(now);
+ if(!calm){
+  while(nextStep*STEP<=now+TRAVEL){const i=nextStep++;if(laneOn&&!document.hidden&&CHART[i%CHART.length]==='x'&&(laneW>560||i%2===0))spawn(i)}// narrow lanes: quarter notes only, so notes never overlap
+  notes=notes.filter(n=>{const x=ringX+(n.t-now)/TRAVEL*(laneW-ringX+40);
+   if(!n.done&&now-n.t>.15){n.done=true;n.el.classList.add('missed');if(combo){combo=0;judge('MISS','miss');setFever(false)}}
+   if(x<-60||(n.el.classList.contains('hit')&&now-n.t>.3)){n.el.remove();return false}
+   n.el.style.transform=`translateX(${x}px)`;return true})}
+ requestAnimationFrame(frame)}
+function tryHit(){const now=songTime(),n=notes.filter(n=>!n.done).sort((a,b)=>Math.abs(a.t-now)-Math.abs(b.t-now))[0];if(n&&Math.abs(n.t-now)<.3)score(n)}
+new IntersectionObserver(e=>laneOn=e[0].isIntersecting).observe(lane);
+// After a hidden tab, drop stale notes instead of counting them as a wall of misses.
+document.addEventListener('visibilitychange',()=>{if(document.hidden)return;notes.forEach(n=>n.el.remove());notes=[];nextStep=Math.ceil((songTime()+TRAVEL)/STEP);lockToBeat()});
+if(calm)lane.classList.add('still');
+nextStep=Math.ceil((songTime()+TRAVEL)/STEP);requestAnimationFrame(frame);
+lane.addEventListener('pointerdown',e=>{if(e.button)return;tryHit()});
+lane.addEventListener('keydown',e=>{if(![' ','f','j','F','J'].includes(e.key))return;e.preventDefault();if(!e.repeat)tryHit()});
