@@ -18,19 +18,19 @@
 
 /* Playful layer: marquee, curious "e", tilting cards, confetti, other works. */
 .marquee{background:var(--ink);color:var(--lime);overflow:hidden;white-space:nowrap;padding:14px 0;transform:rotate(-1.2deg);margin:10px 0 30px;position:relative;z-index:2;font-family:'Manrope',Arial,sans-serif;font-weight:700;font-size:15px;letter-spacing:2px}
-.marquee-track{display:inline-flex;animation:marquee 28s linear infinite}.marquee:hover .marquee-track{animation-play-state:paused}
-@keyframes marquee{to{transform:translateX(-50%)}}
+.marquee-track{display:inline-flex;animation:beat-marquee calc(var(--spb)*64) linear infinite}.marquee:hover .marquee-track{animation-play-state:paused}
+@keyframes beat-marquee{to{transform:translateX(-50%)}}
 .hero-art{cursor:pointer;transform:translate(var(--px,0),var(--py,0)) rotate(-14deg);transition:transform .35s cubic-bezier(.2,.8,.3,1)}
 .hero-art .orbit{transition:transform .6s}.hero-art:hover .o1{transform:rotate(40deg) scale(1.05)}.hero-art:hover .o2{transform:rotate(100deg) scale(1.08)}.hero-art:hover .o3{transform:rotate(160deg) scale(1.03)}
 .hero-art.spin>span{animation:espin .9s cubic-bezier(.3,1.4,.5,1)}@keyframes espin{0%{transform:rotate(0) scale(1)}40%{transform:rotate(200deg) scale(1.15)}100%{transform:rotate(360deg) scale(1)}}
-.poke{position:absolute;top:-6px;right:-20px;font-size:10px;font-weight:600;letter-spacing:.5px;background:var(--lime);color:var(--ink);padding:5px 9px;border-radius:20px;transform:rotate(18deg);animation:bob 2.4s ease-in-out infinite}
-@keyframes bob{50%{transform:rotate(12deg) translateY(-5px)}}
+.poke{position:absolute;top:-6px;right:-20px;font-size:10px;font-weight:600;letter-spacing:.5px;background:var(--lime);color:var(--ink);padding:5px 9px;border-radius:20px;transform:rotate(18deg);animation:beat-bob calc(var(--spb)*4) ease-in-out infinite}
+@keyframes beat-bob{50%{transform:rotate(12deg) translateY(-5px)}}
 h1 em{display:inline-block;transition:transform .4s cubic-bezier(.3,1.6,.5,1)}h1:hover em{transform:rotate(-6deg) scale(1.06);color:#5f7f2f}
 .project,.mini{transition:transform .3s ease}.project:hover,.mini:hover{transform:perspective(900px) rotateX(var(--rx,0)) rotateY(var(--ry,0)) translateY(-4px)}
 .project .visual{transition:box-shadow .3s}.project:hover .visual{box-shadow:9px 9px 0 var(--ink)}
 .project:nth-child(3n+1):hover .visual{box-shadow:9px 9px 0 #e47d36}.project:nth-child(3n+2):hover .visual{box-shadow:9px 9px 0 #8fb6ff}
 .visual .arrow{transition:transform .35s,background .35s}.project:hover .arrow{transform:rotate(45deg);background:var(--lime)}
-.section-head h2{transition:letter-spacing .4s}.eyebrow .dot{animation:pulse 1.8s ease-in-out infinite}@keyframes pulse{50%{transform:scale(1.8);background:#dbfa73}}
+.section-head h2{transition:letter-spacing .4s}.eyebrow .dot{animation:beat-pulse var(--spb) ease-out infinite}@keyframes beat-pulse{0%{transform:scale(1.8);background:var(--yellow)}100%{transform:scale(1)}}
 html,body{overflow-x:clip}main{overflow-x:clip}
 .confetti{position:fixed;pointer-events:none;z-index:200;font-size:18px;line-height:1}
 .other-works{margin-top:60px;padding-top:28px;border-top:1px dashed #a8b19b}
@@ -73,8 +73,8 @@ h1:hover em{color:var(--cyan)}
 /* rhythm lane */
 .beat-lane{position:relative;height:78px;margin-top:34px;border:3px solid var(--ink);border-radius:40px;background:repeating-linear-gradient(115deg,#241a4a 0 26px,#2c2158 26px 52px);overflow:hidden;box-shadow:6px 6px 0 var(--pink);cursor:pointer}
 .beat-lane:before{content:'';position:absolute;left:0;right:0;top:50%;height:4px;margin-top:-2px;background:repeating-linear-gradient(90deg,#ffffff55 0 14px,transparent 14px 26px)}
-.hit-ring{position:absolute;left:46px;top:50%;width:54px;height:54px;margin-top:-27px;border:4px solid var(--yellow);border-radius:50%;box-shadow:0 0 0 4px #ffe14a44,inset 0 0 0 4px #ffe14a44;animation:ring .85s ease-in-out infinite}
-@keyframes ring{50%{transform:scale(1.1)}}
+.hit-ring{position:absolute;left:46px;top:50%;width:54px;height:54px;margin-top:-27px;border:4px solid var(--yellow);border-radius:50%;box-shadow:0 0 0 4px #ffe14a44,inset 0 0 0 4px #ffe14a44;animation:beat-ring var(--spb) ease-out infinite}
+@keyframes beat-ring{0%{transform:scale(1.14)}100%{transform:scale(1)}}
 .lane-label{position:absolute;right:22px;top:8px;font-size:9px;letter-spacing:2px;color:#ffffffaa;font-weight:700}
 .combo{position:absolute;right:22px;bottom:8px;font-family:var(--display);font-size:13px;color:var(--yellow)}
 .judge{position:absolute;left:112px;top:50%;transform:translateY(-50%);font-family:var(--display);font-size:20px;opacity:0;pointer-events:none}
@@ -151,3 +151,32 @@ dialog::backdrop{background:#241a4acc}
 .interest-tags li{border:2px solid var(--ink);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;background:var(--yellow)}
 .interest-tags li:nth-child(even){background:var(--cyan)}
 .interests p{font-size:13px;line-height:1.75;color:var(--muted)}
+
+/* ===== Beat sync: these move on the same 112 BPM clock as the lane and the soundtrack (app.js pins every beat-* animation to it) ===== */
+:root{--spb:.5357s}
+.hero-art{animation:beat-thump var(--spb) ease-out infinite}
+@keyframes beat-thump{0%{scale:1.04}100%{scale:1}}
+h1 em{animation:beat-shadow calc(var(--spb)*4) ease-out infinite}
+@keyframes beat-shadow{0%{text-shadow:12px 12px 0 var(--yellow)}30%,100%{text-shadow:7px 7px 0 var(--yellow)}}
+.lane-no{animation:beat-tick calc(var(--spb)*2) steps(1) infinite}
+@keyframes beat-tick{0%{rotate:-4deg}50%{rotate:4deg}}
+.circle-link{animation:beat-hop var(--spb) ease-out infinite}
+@keyframes beat-hop{0%{translate:0 5px}100%{translate:0 0}}
+.interest-tags li:nth-child(2){animation:beat-thump var(--spb) ease-out infinite}
+.beat-lane{touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.note{left:0;margin-left:-23px;will-change:transform}
+.note.hit{animation:note-pop .25s ease-out forwards}
+@keyframes note-pop{to{scale:1.7;opacity:0}}
+.note.missed{opacity:.35;filter:grayscale(1)}
+.fever .beat-lane{animation:beat-fever calc(var(--spb)*2) steps(1) infinite}
+@keyframes beat-fever{0%{box-shadow:6px 6px 0 var(--yellow)}50%{box-shadow:6px 6px 0 var(--cyan)}}
+.fever .combo{color:var(--pink);text-shadow:0 0 12px #ff4f9a99}
+.header-tools{display:flex;gap:8px;align-items:center}
+#sound{border:2px solid var(--ink);border-radius:20px;padding:6px 11px;font-size:12px;font-weight:700;background:#fff;white-space:nowrap;display:flex;align-items:center;gap:5px;box-shadow:2px 2px 0 var(--ink)}
+#sound:hover{background:var(--yellow)}
+#sound[aria-pressed=true]{background:var(--pink);color:#fff}
+#sound b{display:inline-block}
+.sound-on #sound b{animation:beat-hop var(--spb) ease-out infinite}
+@media(max-width:800px){.note{margin-left:-20px}}
+@media(max-width:480px){#sound span{display:none}#sound{font-size:11px;padding:6px 9px}}
+@media(prefers-reduced-motion:reduce){.hero-art,h1 em,.lane-no,.circle-link,.interest-tags li,.fever .beat-lane,.sound-on #sound b{animation:none}}
