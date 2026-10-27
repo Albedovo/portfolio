@@ -64,6 +64,18 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(34px,4.4vw,64px);l
 .block-head p{font-size:18px;line-height:1.6;color:var(--muted);max-width:880px;margin-top:18px}
 h3{font-size:20px;line-height:1.25}
 
+/* Positioning: where Feed the Beat sits between home and full-body rhythm games */
+.position{position:relative;height:420px;margin:64px 0 0 110px;border-left:3px solid var(--ink);border-bottom:3px solid var(--ink);background:linear-gradient(to right,transparent 49.8%,#1b15301a 50%,transparent 50.2%),linear-gradient(to bottom,transparent 49.6%,#1b15301a 50%,transparent 50.4%)}
+.axis{position:absolute;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--muted)}
+.axis.y{left:-3px;top:-28px}
+.axis.x{right:0;bottom:-26px}
+.spot{position:absolute;max-width:240px;background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:10px 14px;box-shadow:4px 4px 0 var(--ink)}
+.spot b{display:block;font-size:16px}
+.spot small{display:block;font-size:13px;line-height:1.4;color:var(--muted);margin-top:2px}
+.spot.arcade{left:4%;top:8%}.spot.console{left:30%;top:28%}.spot.phone{right:6%;bottom:8%}
+.spot.me{right:4%;top:6%;background:var(--pink);color:#fff;transform:rotate(-2deg);box-shadow:6px 6px 0 var(--ink)}
+.spot.me b{font-family:var(--display);font-weight:400;font-size:22px}.spot.me small{color:#fff}
+
 /* Demos */
 .demo{margin:36px 0 0 110px;background:#fff;border:3px solid var(--ink);border-radius:24px;padding:26px;box-shadow:8px 8px 0 var(--ink)}
 .demo-top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
@@ -175,6 +187,6 @@ dialog .close{float:right;width:36px;height:36px;border-radius:50%;background:va
 html[lang="zh-CN"] .tr,html[lang="zh-CN"] .quote .en{display:none}
 
 @media(max-width:1000px){.cols.three,.cols.four,.tldr,.cut-grid{grid-template-columns:1fr}.facts{grid-template-columns:1fr 1fr}.evidence{grid-template-columns:1fr}
-  .demo,#latency .cols,.evidence,.ai-practice,.chats,.insight,.cut-grid,.ladder,#round-two .cols,#who .cols,.lessons,.end-actions{margin-left:0}.block-head{grid-template-columns:1fr}.tilt-l,.tilt-r{transform:none}}
-@media(max-width:640px){header{gap:14px}.wordmark{font-size:28px}.wordmark small{display:none}nav{gap:14px;font-size:12px}.bars{grid-template-columns:1fr}.ladder{grid-template-columns:1fr 1fr}.s1,.s2,.s3,.s4{height:auto;min-height:110px}.facts{grid-template-columns:1fr}.demo{padding:18px}.quote p{font-size:21px}footer{flex-wrap:wrap}}
+  .position,.demo,#latency .cols,.evidence,.ai-practice,.chats,.insight,.cut-grid,.ladder,#round-two .cols,#who .cols,.lessons,.end-actions{margin-left:0}.block-head{grid-template-columns:1fr}.tilt-l,.tilt-r{transform:none}}
+@media(max-width:640px){.position{height:auto;display:grid;gap:12px;padding:16px 16px 40px;background:none}.spot{position:static;max-width:none;transform:none!important}.axis{display:none}header{gap:14px}.wordmark{font-size:28px}.wordmark small{display:none}nav{gap:14px;font-size:12px}.bars{grid-template-columns:1fr}.ladder{grid-template-columns:1fr 1fr}.s1,.s2,.s3,.s4{height:auto;min-height:110px}.facts{grid-template-columns:1fr}.demo{padding:18px}.quote p{font-size:21px}footer{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
