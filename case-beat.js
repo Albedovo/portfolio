@@ -14,9 +14,15 @@ function setLang(next) {
 $('#language').addEventListener('click', () => setLang(lang === 'en' ? 'zh' : 'en'));
 try { if (localStorage.getItem('echo-lang') === 'zh') setLang('zh'); } catch {}
 
+// The hero loop autoplays muted (browsers require it); the button turns its sound on and off.
+const heroVideo = $('#hero-video'), heroSound = $('#hero-sound');
+const soundLabel = () => (heroVideo.muted ? ['🔈 Sound on', '🔈 打开声音'] : ['🔇 Mute', '🔇 静音']);
+function syncSound() { const [en, zh] = soundLabel(); heroSound.dataset.en = en; heroSound.dataset.zh = zh; heroSound.textContent = t(en, zh); heroSound.setAttribute('aria-pressed', String(!heroVideo.muted)); }
+heroSound.addEventListener('click', () => { heroVideo.muted = !heroVideo.muted; if (!heroVideo.muted) heroVideo.play().catch(() => {}); syncSound(); });
+
 // The full run (with sound) opens in a dialog and only loads when asked for.
 const runDialog = $('#run-dialog'), runVideo = $('#run-video');
-$('#full-run').addEventListener('click', () => { runDialog.showModal(); runVideo.play().catch(() => {}); });
+$('#full-run').addEventListener('click', () => { heroVideo.muted = true; syncSound(); runDialog.showModal(); runVideo.play().catch(() => {}); });
 runDialog.querySelector('.close').addEventListener('click', () => runDialog.close());
 runDialog.addEventListener('close', () => runVideo.pause());
 runDialog.addEventListener('click', e => { if (e.target === runDialog) runDialog.close(); });
