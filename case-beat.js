@@ -14,7 +14,7 @@ function setLang(next) {
 $('#language').addEventListener('click', () => setLang(lang === 'en' ? 'zh' : 'en'));
 try { if (localStorage.getItem('echo-lang') === 'zh') setLang('zh'); } catch {}
 
-// The full 73-second run opens in a dialog and only loads when asked for.
+// The full run (with sound) opens in a dialog and only loads when asked for.
 const runDialog = $('#run-dialog'), runVideo = $('#run-video');
 $('#full-run').addEventListener('click', () => { runDialog.showModal(); runVideo.play().catch(() => {}); });
 runDialog.querySelector('.close').addEventListener('click', () => runDialog.close());
