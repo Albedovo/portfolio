@@ -116,7 +116,6 @@ h3{font-size:20px;line-height:1.25}
 .evidence{display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:center;margin-top:40px}
 .quote{background:var(--yellow);border:3px solid var(--ink);border-radius:18px;padding:26px;box-shadow:var(--shadow);transform:rotate(-1.5deg)}
 .quote p{font-size:26px;font-weight:800;line-height:1.35}
-.quote .en{font-size:17px;font-weight:500;font-style:italic;margin-top:10px}
 .quote cite{display:block;font-family:var(--mono);font-style:normal;font-size:12px;margin-top:14px}
 
 /* Evolution timeline */
@@ -186,7 +185,7 @@ dialog video{display:block;width:100%;border-radius:12px;margin-top:10px}
 dialog .close{float:right;width:36px;height:36px;border-radius:50%;background:var(--ink);color:#fff;font-size:24px;line-height:1}
 
 /* The Chinese view reads the original quotes; the English glosses beside them are hidden. */
-html[lang="zh-CN"] .tr,html[lang="zh-CN"] .quote .en{display:none}
+
 
 @media(max-width:1000px){.cols.three,.cols.four,.tldr,.cut-grid{grid-template-columns:1fr}.facts{grid-template-columns:1fr 1fr}.evidence{grid-template-columns:1fr}
   .position,.demo,#latency .cols,.evidence,.ai-practice,.chats,.insight,.cut-grid,.ladder,#round-two .cols,#who .cols,.lessons,.end-actions{margin-left:0}.block-head{grid-template-columns:1fr}.tilt-l,.tilt-r{transform:none}}
