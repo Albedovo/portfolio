@@ -1,0 +1,375 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cityweave — Clickable prototype · Xiwen (Echo) Yan</title>
+<meta name="description" content="Cityweave: a skill-exchange service that weaves learning, earning and co-creation into city life. Tap through the prototype: match with a neighbour, buy a course with skill coins, propose a city project.">
+<link rel="canonical" href="https://portfolio.xiwenyan.top/cityweave.html">
+<meta name="author" content="Xiwen Yan (Echo Yan)"><meta name="theme-color" content="#19a8e6">
+<meta property="og:type" content="article"><meta property="og:title" content="Cityweave — clickable prototype by Xiwen (Echo) Yan">
+<meta property="og:description" content="Weaving skills into the city fabric. Tap through the prototype.">
+<meta property="og:url" content="https://portfolio.xiwenyan.top/cityweave.html"><meta property="og:image" content="https://portfolio.xiwenyan.top/assets/cityweave-cover.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/avatar.png">
+<link rel="stylesheet" href="proto.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+:root{--accent:#8fd8fb}
+/* Cityweave — sky blue, one orange, lots of white. Rebuilt from the high-fidelity board. */
+.cw{--blue:#19a8e6;--pale:#bfe6fa;--bg:#eef8fd;--or:#f7941d;--ink:#16202a;--mute:#93a3b0;background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif}
+.cw .screen{background:var(--bg)}
+.cw svg.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.cw .bar{flex:none;height:44px;display:grid;grid-template-columns:52px 1fr 52px;align-items:center;text-align:center;font-weight:700;font-size:15px}
+.cw .bar button{height:100%;display:grid;place-items:center}
+.cw .tabs{flex:none;display:grid;grid-template-columns:repeat(4,1fr);background:var(--blue);padding:10px 8px 28px;color:rgba(255,255,255,.62)}
+.cw .tabs button{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;font-weight:600;position:relative}
+.cw .tabs .cur{color:#fff}.cw .tabs .cur::before{content:'';position:absolute;top:-10px;width:26px;height:4px;border-radius:0 0 3px 3px;background:var(--or)}
+.cw .btn{display:block;width:100%;padding:13px;border-radius:8px;background:var(--blue);color:#fff;font-weight:700;font-size:14px;text-align:center}
+.cw .btn.or{background:var(--or)}.cw .btn.soft{background:#fbe0bf;color:#6b4a1d}.cw .btn.round{border-radius:30px}
+.cw .btn:active{filter:brightness(.92)}
+.cw .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 16px}.cw .chips::-webkit-scrollbar{display:none}
+.cw .chip2{flex:none;padding:5px 14px;border-radius:6px;border:1px solid var(--or);font-size:11.5px;font-weight:600;background:#fff}
+.cw .chip2[aria-pressed=true]{background:var(--or);color:#fff}
+.cw .card{background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(25,120,170,.08)}
+/* map */
+.cw .map{position:absolute;inset:0 0 0 0;background:#f1f0ef;overflow:hidden}
+.cw .map svg{width:100%;height:100%;display:block;transition:transform .35s cubic-bezier(.2,.8,.2,1);transform-origin:50% 42%}
+.cw .map text{font:500 13px 'Plus Jakarta Sans',sans-serif;fill:#3c4650}
+.cw .pin{cursor:pointer}.cw .pin circle{transition:r .2s}
+.cw .pin.on .halo{animation:halo 1.6s infinite}@keyframes halo{from{r:10;opacity:.5}to{r:26;opacity:0}}
+.cw .search{position:absolute;left:14px;right:14px;top:58px;z-index:3;height:38px;border-radius:6px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.12);display:flex;align-items:center;gap:10px;padding:0 12px;color:#444;font-size:13px}
+.cw .search input{flex:1;border:0;outline:0;font:inherit;background:none;min-width:0}
+.cw .zoom{position:absolute;right:14px;top:112px;z-index:3;display:grid;border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.14);background:#fff}
+.cw .zoom button{width:34px;height:34px;font-size:20px;color:#555}.cw .zoom button+button{border-top:1px solid #ddd}
+.cw .person{position:absolute;left:0;right:0;bottom:74px;z-index:4;background:#fff;border-radius:18px 18px 0 0;padding:22px 18px 18px;box-shadow:0 -6px 24px rgba(0,0,0,.1);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.cw .person::before{content:'';position:absolute;left:50%;top:8px;width:26px;height:3px;margin-left:-13px;border-radius:2px;background:#333}
+.cw .person .top{display:flex;gap:16px;align-items:center;margin-bottom:16px}
+.cw .face{width:84px;height:84px;border-radius:50%;object-fit:cover;flex:none;background:#f6d7c6;display:grid;place-items:center;font-weight:800;font-size:26px;color:#fff}
+.cw .person h3{font-size:18px;font-weight:700}.cw .person p{font-size:12.5px;color:#444;line-height:1.5}
+.cw .two{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.cw .two .btn{padding:9px;font-size:11.5px;border-radius:5px}
+.cw .maptabs{position:absolute;left:0;right:0;bottom:0;z-index:5}
+/* sheets */
+.cw .dim{position:absolute;inset:0;z-index:8;background:rgba(10,30,45,.4);opacity:0;pointer-events:none;transition:opacity .25s}.cw .dim.show{opacity:1;pointer-events:auto}
+.cw .sheet{position:absolute;left:0;right:0;bottom:0;z-index:9;background:#fff;border-radius:22px 22px 0 0;padding:26px 22px 40px;transform:translateY(105%);transition:transform .32s cubic-bezier(.2,.8,.2,1);max-height:82%;overflow-y:auto}
+.cw .sheet.show{transform:none}
+.cw .sheet h4{margin:0 0 6px;font-size:18px}.cw .sheet p{font-size:13px;line-height:1.55;color:#56636e}
+.cw .lbl{font-size:11px;font-weight:700;letter-spacing:.6px;color:var(--mute);margin:16px 0 8px;text-transform:uppercase}
+.cw .opts{display:flex;flex-wrap:wrap;gap:8px}
+.cw .opt{padding:9px 14px;border-radius:20px;border:1.5px solid var(--pale);font-size:13px;font-weight:600;background:#fff}
+.cw .opt[aria-pressed=true]{border-color:var(--blue);background:var(--pale)}
+.cw .ok{width:64px;height:64px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;margin:4px auto 14px}
+.cw .ok svg{width:34px;height:34px;stroke-width:2.6}
+.cw .field{width:100%;padding:12px 14px;border-radius:8px;border:1.5px solid var(--pale);font:600 15px 'Plus Jakarta Sans',sans-serif;outline:0;background:#f7fcff}
+.cw .field:focus{border-color:var(--blue)}
+.cw .pay{display:flex;align-items:center;gap:12px;width:100%;padding:13px;border-radius:10px;border:1.5px solid var(--pale);text-align:left;font-size:14px;font-weight:700;margin-top:8px}
+.cw .pay small{display:block;font-weight:500;font-size:11.5px;color:var(--mute)}
+.cw .pay[aria-pressed=true]{border-color:var(--blue);background:#e8f6fe}
+.cw .pay i{width:36px;height:36px;border-radius:9px;background:#ffeecf;display:grid;place-items:center;font-style:normal;color:var(--or);font-weight:800;flex:none}
+/* workshop */
+.cw .seg{display:grid;grid-template-columns:1fr 1fr;margin:4px 16px 12px;font-size:14px;font-weight:600}
+.cw .seg button{padding:7px;border-radius:6px}.cw .seg button[aria-pressed=true]{background:#5cc4f2;color:#fff;font-weight:700}
+.cw .course{display:grid;grid-template-columns:1fr 92px;gap:12px;width:100%;text-align:left;padding:14px;margin-top:8px}
+.cw .course small{font-size:10px;color:var(--mute)}.cw .course h3{font-size:13px;font-weight:700;line-height:1.3;margin:6px 0 4px}
+.cw .course p{font-size:10.5px;line-height:1.5;color:var(--mute)}
+.cw .course img{width:92px;height:112px;object-fit:cover;border-radius:6px}
+.cw .price{display:inline-block;margin-top:10px;padding:4px 16px;border-radius:14px;background:var(--or);color:#fff;font-size:11px;font-weight:700}
+.cw .owned{background:var(--blue)}
+.cw h2{font-size:16px;font-weight:700;margin:14px 0 10px}
+.cw .hscroll{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px 6px}.cw .hscroll::-webkit-scrollbar{display:none}
+.cw .proj{flex:none;width:170px;text-align:left}.cw .proj img{width:170px;height:98px;object-fit:cover;border-radius:6px;display:block}
+.cw .proj b{display:block;font-size:12px;margin:10px 0 3px}.cw .proj span{font-size:10.5px;line-height:1.45;color:var(--mute);display:block}
+.cw .prop{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:10px;border-radius:6px;background:var(--pale);margin-top:8px;font-size:12.5px;font-weight:600}
+.cw .prop i{width:38px;height:38px;border-radius:8px;background:#fff;display:grid;place-items:center;flex:none;color:var(--or)}
+.cw .prop small{display:block;font-weight:500;font-size:10.5px;color:#6f8797}
+.cw .prop em{margin-left:auto;font-style:normal;font-size:10.5px;padding:3px 9px;border-radius:10px;background:#fff;color:var(--blue);white-space:nowrap}
+.cw .prop.new{animation:slidein .45s cubic-bezier(.2,1.2,.4,1)}@keyframes slidein{from{transform:translateY(-14px);opacity:0}}
+/* course detail */
+.cw .cover{width:100%;height:240px;object-fit:cover;display:block}
+.cw [data-screen=course] .scroll::before{content:'';position:absolute;left:0;right:0;top:0;height:110px;background:linear-gradient(#0008,#0000);z-index:1;pointer-events:none}
+.cw .teacher{display:flex;gap:12px;align-items:center;font-size:13px;font-weight:700}.cw .teacher img{width:44px;height:44px;border-radius:50%}
+.cw .teacher small{display:block;font-weight:500;color:var(--mute);font-size:11px}
+.cw .review{font-size:12px;line-height:1.55;color:#56636e;padding:10px 0;border-top:1px solid #e3eef4}
+.cw .buyband{flex:none;background:var(--blue);padding:14px 20px 34px;color:#fff}
+.cw .prog{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:600;margin-bottom:10px}
+.cw .prog i{flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.35);overflow:hidden}.cw .prog i::after{content:'';display:block;height:100%;width:var(--w,0%);background:var(--or);transition:width .5s}
+.cw .buyband .btn{background:#fff;color:var(--ink)}
+/* market */
+.cw .quick{display:grid;grid-template-columns:repeat(3,1fr);padding:4px 30px 12px}
+.cw .quick button{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10px;font-weight:600;color:#4a5661;position:relative}
+.cw .quick i{width:44px;height:44px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(25,120,170,.12);display:grid;place-items:center;color:var(--or)}
+.cw .badge{position:absolute;top:-5px;right:calc(50% - 30px);min-width:18px;height:18px;border-radius:9px;background:#e5484d;color:#fff;font-size:10px;font-weight:700;line-height:18px;padding:0 5px;transform:scale(0);transition:transform .25s cubic-bezier(.2,1.6,.4,1)}.cw .badge.on{transform:none}
+.cw .goods{columns:2;column-gap:10px;padding:0 14px 16px}
+.cw .good{break-inside:avoid;display:block;width:100%;text-align:left;margin-bottom:10px;padding:0 0 10px;overflow:hidden}
+.cw .good img{width:100%;display:block;object-fit:cover;border-radius:12px}
+.cw .good q{display:block;font-size:8.500px;line-height:1.35;color:var(--mute);padding:7px 10px 0;quotes:none}
+.cw .good b{display:block;font-size:12px;padding:3px 10px 2px}
+.cw .good span{display:flex;justify-content:space-between;align-items:baseline;padding:0 10px;font-size:13px;font-weight:600}.cw .good small{font-size:9px;color:var(--mute);font-weight:500}
+.cw .tag{display:inline-block;padding:3px 9px;border-radius:5px;border:1px solid var(--or);font-size:10px;font-weight:600;margin-right:6px}
+.cw .line{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid #e3eef4;font-size:13px;font-weight:600}
+.cw .line img{width:46px;height:46px;border-radius:8px;object-fit:cover}.cw .line span{margin-left:auto}
+/* my */
+.cw .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:16px}
+.cw .stats div{background:var(--pale);border-radius:6px;padding:10px 4px;text-align:center;font-size:20px;font-weight:700}
+.cw .stats small{display:block;font-size:9.500px;font-weight:500;color:#7e97a8;line-height:1.3;margin-top:6px}
+.cw .rowbtn{display:flex;gap:12px;align-items:center;width:100%;padding:10px 12px;border-radius:6px;background:var(--pale);text-align:left;font-size:13px;font-weight:600}
+.cw .rowbtn i{width:36px;height:36px;border-radius:8px;background:#fff;display:grid;place-items:center;flex:none;color:var(--or);font-style:normal;font-weight:800}
+.cw .rowbtn small{display:block;font-weight:500;font-size:11px;color:#7e97a8}.cw .rowbtn>svg{margin-left:auto}
+.cw .float{position:absolute;width:38px;height:38px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(25,120,170,.16);display:grid;place-items:center;color:var(--or)}
+.cw .bal{font-size:26px;font-weight:800;margin:10px 0 16px}
+.cw .kv{display:flex;justify-content:space-between;font-size:11.5px;color:var(--mute);padding:9px 0;border-top:1px solid #dcebf3}.cw .kv b{color:var(--ink);font-weight:600}
+</style></head><body>
+<a class="skip" href="#prototype" data-en="Skip to the prototype" data-zh="跳到原型">Skip to the prototype</a>
+<header class="site"><a class="wordmark" href="index.html">echo<span>®</span><small>Xiwen Yan / Echo</small></a><nav aria-label="Main navigation"><a href="index.html#work" data-en="Work" data-zh="作品">Work</a><a href="index.html#play" data-en="Playground" data-zh="实验场">Playground</a><a href="index.html#about" data-en="About" data-zh="关于">About</a></nav><button id="language" aria-label="Switch to Chinese">中 / EN</button></header>
+
+<main>
+<section class="intro">
+  <div>
+    <div class="tags"><span class="chip accent" data-en="CLICKABLE PROTOTYPE" data-zh="可点击原型">CLICKABLE PROTOTYPE</span><span class="chip">SERVICE SYSTEM DESIGN</span><span class="chip">SKILL EXCHANGE</span></div>
+    <h1>Cityweave</h1>
+  </div>
+  <div>
+    <p class="lead" data-en="A neighbourhood skill-exchange service. Trade what you can teach for what you want to learn, earn skill coins, spend them on courses and crafts, and put them toward projects for the city." data-zh="一个社区技能交换服务。用你会教的，换你想学的；赚取技能币，用来购买课程和手作，也可以投入城市共创项目。">A neighbourhood skill-exchange service. Trade what you can teach for what you want to learn, earn skill coins, spend them on courses and crafts, and put them toward projects for the city.</p>
+    <div class="facts"><span><b data-en="ROLE" data-zh="角色">ROLE</b><span data-en="Independent designer" data-zh="独立设计">Independent designer</span></span><span><b data-en="PERIOD" data-zh="时间">PERIOD</b>SEP — DEC 2025</span><span><b data-en="SCOPE" data-zh="范围">SCOPE</b><span data-en="Research · service system · app" data-zh="研究 · 服务系统 · 应用">Research · service system · app</span></span></div>
+  </div>
+</section>
+
+<section class="stage" id="prototype">
+  <aside class="panel">
+    <h2 data-en="TRY THIS" data-zh="试试这些">TRY THIS</h2>
+    <ol class="tasks">
+      <li><button data-go="map" data-task="match"><b data-en="Match with a neighbour" data-zh="和附近的人匹配">Match with a neighbour</b><span data-en="Tap a pin on the map, then “Initiate exchange”." data-zh="点击地图上的标记，再点「发起交换」。">Tap a pin on the map, then “Initiate exchange”.</span></button></li>
+      <li><button data-go="workshop" data-screens="workshop,course" data-task="course"><b data-en="Buy a course with skill coins" data-zh="用技能币购买课程">Buy a course with skill coins</b><span data-en="Open the watercolor course and choose how to pay." data-zh="打开水彩课程，选择支付方式。">Open the watercolor course and choose how to pay.</span></button></li>
+      <li><button data-go="workshop" data-screens="none" data-task="propose"><b data-en="Propose a city project" data-zh="发起一个城市共创项目">Propose a city project</b><span data-en="Switch to City Co-Creation and add your own idea." data-zh="切换到「城市共创」，添加你自己的想法。">Switch to City Co-Creation and add your own idea.</span></button></li>
+      <li><button data-go="market" data-screens="market,product" data-task="cart"><b data-en="Shop the makers’ market" data-zh="逛逛手作市集">Shop the makers’ market</b><span data-en="Add something to the cart and check out." data-zh="把一件商品加入购物车并结算。">Add something to the cart and check out.</span></button></li>
+      <li><button data-go="my" data-screens="my,income" data-task="cash"><b data-en="Withdraw what you earned" data-zh="提现你的收入">Withdraw what you earned</b><span data-en="Open My income from the profile and withdraw." data-zh="从个人页进入「我的收入」并提现。">Open My income from the profile and withdraw.</span></button></li>
+    </ol>
+  </aside>
+
+  <div class="device"><div class="phone cw" data-start="map">
+    <div class="statusbar"><span>9:41</span><svg viewBox="0 0 70 14"><rect x="0" y="9" width="3" height="5" rx="1"/><rect x="5" y="6" width="3" height="8" rx="1"/><rect x="10" y="3" width="3" height="11" rx="1"/><rect x="15" y="0" width="3" height="14" rx="1"/><path d="M33 3.2c3 0 5.600 1.200 7.500 3.100l-1.500 1.500a8.400 8.400 0 0 0-12 0l-1.500-1.500A10.600 10.600 0 0 1 33 3.200zm0 4.200c1.800 0 3.400.7 4.600 1.900L33 14l-4.600-4.700A6.500 6.500 0 0 1 33 7.400z"/><rect x="47" y="1" width="21" height="12" rx="3.500"/></svg></div>
+
+    <!-- Map -->
+    <section class="screen" data-screen="map" data-status="#111" data-title="Map" data-title-zh="地图" data-note-en="The map is the home screen because distance decides whether people show up: in the survey, a convenient location was the most-cited factor when enrolling. Pins are people with a skill to trade, not venues." data-note-zh="地图是首页，因为距离决定人们会不会来：问卷中，「地点方便」是报名时最常被提到的因素。标记代表的是有技能可以交换的人，而不是场所。">
+      <div class="map"><svg viewBox="0 0 390 640" preserveAspectRatio="xMidYMid slice" id="mapsvg">
+        <rect width="390" height="640" fill="#f1f0ef"/>
+        <path d="M250 0h140v70l-60 30z" fill="#fdf3d6"/><path d="M0 150l40-20 14 30-54 26z" fill="#d8efd9"/><path d="M130 190l40-18 8 16-40 18z" fill="#d8efd9"/><path d="M300 420l60-14 6 18-28 8-44 130-26-8z" fill="#8ed8ea"/>
+        <g stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round"><path d="M-10 250 400 60M-10 330 400 180M-10 470 400 300M60 0l90 640M200 0l70 640M-10 560 400 600M320 0l-40 300"/></g>
+        <g stroke="#fff" stroke-width="4" fill="none"><path d="M-10 120 400 -20M-10 400 400 240M110 0l80 640M-10 520 300 640M360 100l-60 540M0 200l120 440"/></g>
+        <g stroke="#dcdcdc" stroke-width="1.200" fill="none"><path d="M-10 372 400 232M-10 380 400 240M-10 388 400 248M-10 396 400 256M-10 404 400 264M-10 364 400 224"/></g>
+        <path d="M-10 268 300 88 400 30" stroke="#8aa0b8" stroke-width="9" fill="none" opacity=".75"/><path d="M-10 590c90 0 150 20 240 60" stroke="#8aa0b8" stroke-width="9" fill="none" opacity=".75"/>
+        <text x="86" y="152">Court Sq</text><circle cx="70" cy="147" r="8" fill="#1d4fc4"/><text x="70" y="150" font-size="7" style="fill:#fff;font-size:6.500px;text-anchor:middle">M</text>
+        <text transform="translate(128 222) rotate(-27)">Jackson Ave</text><text transform="translate(138 388) rotate(-25)">Skillman Ave</text>
+        <text x="86" y="412">Hunterspoint Avenue</text><circle cx="70" cy="407" r="8" fill="#1d4fc4"/>
+        <text transform="translate(40 492) rotate(10)" style="font-size:11px">51st Ave</text><text transform="translate(232 486) rotate(-70)" style="font-size:11px">27th St</text><text x="246" y="470" style="font-size:10.500px;fill:#4a9fb5">Dutch Kills</text>
+        <text x="6" y="300" style="font-weight:700;letter-spacing:1.500px">CITY</text><text x="290" y="318" style="fill:#75808a">Community</text>
+        <g id="pins"></g>
+      </svg></div>
+      <label class="search"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="11" cy="11" r="6.500"/><path d="m16 16 4.500 4.500"/></svg><input id="q" type="search" placeholder="Search a skill: coffee, ceramics, film…" aria-label="Search a skill"></label>
+      <div class="zoom"><button data-act="zoom" data-d="1" aria-label="Zoom in">+</button><button data-act="zoom" data-d="-1" aria-label="Zoom out">−</button></div>
+      <div class="person" id="person"></div>
+      <nav class="tabs maptabs" data-tab="map"></nav>
+    </section>
+
+    <!-- Market -->
+    <section class="screen" data-screen="market" data-status="#111" data-title="Market" data-title-zh="市集" data-note-en="Where a learned skill starts paying back. Makers list handmade work and services; items with the coin badge can be bought with skill coins earned from teaching." data-note-zh="学到的技能在这里开始产生回报。手作人在此上架作品与服务；带金币标记的商品，可以用教学赚到的技能币购买。">
+      <div class="bar"><span></span>Market<button data-act="soon" aria-label="Search"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.500"/><path d="m16 16 4.500 4.500"/></svg></button></div>
+      <div class="scroll">
+        <div class="quick"><button data-act="orders"><i><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 10h8M8 14h5"/></svg></i>My Order</button><button data-act="cart"><i><svg class="ic" viewBox="0 0 24 24"><path d="M3 5h3l2 10h10l2-7H7.500"/><circle cx="9.500" cy="19" r="1.300"/><circle cx="17" cy="19" r="1.300"/></svg></i>Shopping Cart<em class="badge" id="cartn">0</em></button><button data-act="coupons"><i><svg class="ic" viewBox="0 0 24 24"><path d="M4 8h16v3a2 2 0 0 0 0 4v3H4v-3a2 2 0 0 0 0-4zM10 8v10"/></svg></i>Coupons</button></div>
+        <div class="goods" id="goods"></div>
+      </div>
+      <nav class="tabs" data-tab="market"></nav>
+    </section>
+    <section class="screen" data-screen="product" data-status="#111" data-title="Product details" data-title-zh="商品详情" data-note-en="A maker’s listing: one large photo, a price, and plain-language details. “Customization” opens a conversation with the maker rather than a form." data-note-zh="手作人的商品页：一张大图、一个价格、平实的说明。「定制」开启的是与手作人的对话，而不是一张表单。">
+      <div class="bar"><button data-back aria-label="Back"><svg class="ic" viewBox="0 0 24 24"><path d="M20 12H5m6-6-6 6 6 6"/></svg></button>Market<span></span></div>
+      <div class="scroll" id="pd"></div>
+      <div style="flex:none;display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:10px 20px 34px"><button class="btn soft round" data-act="add">Add to Cart</button><button class="btn or round" data-act="buy">Buy Now</button></div>
+    </section>
+
+    <!-- Workshop -->
+    <section class="screen" data-screen="workshop" data-status="#111" data-title="Workshop" data-title-zh="工作坊" data-note-en="Two kinds of learning side by side: short paid courses taught by neighbours, and City Co-Creation, where skills go into shared projects like a park or a community library." data-note-zh="两种学习并列呈现：由邻居教授的短期付费课程，以及「城市共创」，把技能投入公园、社区图书馆这样的共享项目。">
+      <div class="bar"><span></span>Workshop<button data-act="soon" aria-label="Search"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.500"/><path d="m16 16 4.500 4.500"/></svg></button></div>
+      <div class="seg" id="wseg"><button aria-pressed="true" data-act="wtab" data-t="paid">Paid Courses</button><button aria-pressed="false" data-act="wtab" data-t="city">City Co-Creation</button></div>
+      <div class="scroll" id="w-paid">
+        <div class="chips" id="cfilter"><button class="chip2" aria-pressed="true" data-act="sort" data-s="all">All</button><button class="chip2" aria-pressed="false" data-act="sort" data-s="dist">Distance</button><button class="chip2" aria-pressed="false" data-act="sort" data-s="time">Time</button><button class="chip2" aria-pressed="false" data-act="sort" data-s="price">Price</button><button class="chip2" aria-pressed="false" data-act="sort" data-s="all">Personalized</button></div>
+        <div id="courses" style="padding:0 12px 16px"></div>
+      </div>
+      <div class="scroll" id="w-city" hidden style="padding:0 16px 16px">
+        <div class="chips" style="padding:2px 0" id="pfilter"><button class="chip2" aria-pressed="true" data-act="pf" data-f="all">All</button><button class="chip2" aria-pressed="false" data-act="pf" data-f="on">Ongoing</button><button class="chip2" aria-pressed="false" data-act="pf" data-f="done">Completed</button><button class="chip2" aria-pressed="false" data-act="pf" data-f="prop">Proposed</button></div>
+        <div id="sec-on"><div class="card" style="padding:4px 14px 14px;margin-top:12px"><h2>Ongoing Projects</h2><div class="hscroll"><button class="proj" data-act="join" data-n="Park Revitalization"><img src="assets/proto/cw/park.webp" alt=""><b>Park Revitalization</b><span>Transforming a neglected park into a vibrant community space.</span></button><button class="proj" data-act="join" data-n="Community Garden"><img src="assets/proto/cw/garden.webp" alt=""><b>Community Garden</b><span>Creating a shared garden for residents to grow and connect.</span></button></div></div></div>
+        <div id="sec-prop"><h2>Proposed Projects</h2><div id="props"></div><button class="btn" style="margin-top:12px" data-act="propose">＋ Propose Project</button></div>
+        <p id="sec-done" hidden style="font-size:13px;color:var(--mute);padding:30px 0;text-align:center">No completed projects in this neighbourhood yet.</p>
+      </div>
+      <nav class="tabs" data-tab="workshop"></nav>
+    </section>
+    <section class="screen" data-screen="course" data-status="#111" data-title="Course detail" data-title-zh="课程详情" data-note-en="An immersive landing page for one course: cover art, what you will make, the teacher’s certification and real reviews. Pay in yuan or in skill coins; coins are how teaching one thing funds learning another." data-note-zh="单个课程的沉浸式落地页：封面、你将做出什么、教师认证和真实评价。可以用人民币或技能币支付；技能币让「教一样」可以支持「学另一样」。">
+      <div class="bar" style="position:absolute;left:0;right:0;top:52px;z-index:2;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.5)"><button data-back aria-label="Back"><svg class="ic" viewBox="0 0 24 24"><path d="M20 12H5m6-6-6 6 6 6"/></svg></button>Course Intro<span></span></div>
+      <div class="scroll" style="margin-top:-52px"><img class="cover" id="c-cover" alt="">
+        <div style="padding:16px 20px 20px"><h3 id="c-title" style="font-size:19px;line-height:1.25"></h3><p id="c-desc" style="font-size:13px;line-height:1.6;color:#56636e;margin-top:8px"></p>
+          <div class="card" style="padding:14px;margin-top:16px"><div class="lbl" style="margin-top:0">Teacher Certification</div><div class="teacher"><img src="assets/proto/cw/sophia.webp" alt=""><span>Sophia Chen<small>Artist · certified instructor</small></span></div></div>
+          <div class="lbl">User Reviews</div>
+          <div class="review">“Small group, real paint on real paper within ten minutes. I left with something I wanted to frame.”<br><b>— Li Yue</b></div>
+          <div class="review">“Clear pace for someone who is tired after work. Two hours felt short.”<br><b>— Marcus L.</b></div>
+        </div>
+      </div>
+      <div class="buyband"><div class="prog"><span>Completion Progress</span><i id="c-prog"></i><span id="c-step">0/5</span></div><button class="btn round" id="c-buy" data-act="buycourse">Purchase Course</button></div>
+    </section>
+
+    <!-- My -->
+    <section class="screen" data-screen="my" data-status="#111" data-title="My profile" data-title-zh="我的" data-note-en="The profile counts both directions of exchange: skills learned and skills taught. The top-left shortcut leads to income, because for makers this is also where they get paid." data-note-zh="个人页同时记录交换的两个方向：学到的技能和教出去的技能。左上角的入口通向收入页，因为对手作人来说，这里也是他们获得收入的地方。">
+      <div class="bar"><span></span>My<button data-act="soon" aria-label="Settings"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.600 5.600l2.100 2.100m8.600 8.600 2.100 2.100m0-12.800-2.100 2.100M7.700 16.300l-2.100 2.100"/></svg></button></div>
+      <div class="scroll" style="padding:0 18px 16px;position:relative">
+        <button class="float" style="left:20px;top:4px" data-go="income" aria-label="My income"><svg class="ic" viewBox="0 0 24 24"><path d="M4 18a8 8 0 0 1 16 0M7 18a5 5 0 0 1 10 0M10 18a2 2 0 0 1 4 0"/></svg></button>
+        <button class="float" style="right:20px;top:70px" data-act="coins" aria-label="Skill coins"><svg class="ic" viewBox="0 0 24 24"><ellipse cx="12" cy="8" rx="7" ry="3"/><path d="M5 8v4c0 1.700 3.100 3 7 3s7-1.300 7-3V8M5 12v4c0 1.700 3.100 3 7 3s7-1.300 7-3v-4"/></svg></button>
+        <div style="text-align:center;font-size:12px;color:#56636e;line-height:1.5"><img src="assets/proto/cw/ethan.webp" alt="" style="width:96px;height:96px;border-radius:50%;display:block;margin:0 auto 8px"><b style="font-size:17px;color:var(--ink)">Ethan</b><br>UI/UX Designer<br>Joined 2021</div>
+        <div class="stats"><div><span id="s-learn">12</span><small>Skills Learned</small></div><div><span id="s-teach">8</span><small>Skills Taught</small></div><div><span id="s-work">24</span><small>Workshops Attended</small></div></div>
+        <h2>Skill coin</h2><button class="rowbtn" data-act="coins"><i>¢</i><span>Skill Coin Balance<small id="coin-bal">1500</small></span><svg class="ic" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <h2>Achievements</h2><img src="assets/proto/cw/achv.webp" alt="Achievement cards" style="width:100%;border-radius:8px;display:block">
+      </div>
+      <nav class="tabs" data-tab="my"></nav>
+    </section>
+    <section class="screen" data-screen="income" data-status="#111" data-title="Income breakdown" data-title-zh="收入明细" data-note-en="Income is split by where it came from, so a creator can see whether workshops, classes or products are worth their evenings. Withdrawing closes the loop the research asked for: a complete earnings cycle for creators." data-note-zh="收入按来源拆分，创作者可以看出工作坊、课程还是商品更值得投入晚上的时间。提现补上了研究中提出的那一环：创作者完整的收益闭环。">
+      <div class="bar"><button data-back aria-label="Back"><svg class="ic" viewBox="0 0 24 24"><path d="M20 12H5m6-6-6 6 6 6"/></svg></button>My income<span></span></div>
+      <div class="scroll" style="padding:14px 22px"><b style="font-size:15px">Total Balance</b><div class="bal" id="bal"></div>
+        <div class="kv">Withdrawable Amount<b id="wd-able"></b></div><div class="kv">Pending Posting Amount<b>¥ 53.80</b></div>
+        <h2 style="margin-top:20px">Income Breakdown</h2>
+        <div style="background:var(--pale);border-radius:8px;padding:6px"><button class="rowbtn" data-act="soon"><i>W</i><span>¥ 1,250.00<small>Workshop Commissions</small></span><svg class="ic" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button><button class="rowbtn" data-act="soon"><i>C</i><span>¥ 350.00<small>Class Revenue</small></span><svg class="ic" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button><button class="rowbtn" data-act="soon"><i>P</i><span>¥ 53.80<small>Custom Products</small></span><svg class="ic" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button></div>
+        <p style="text-align:center;font-size:10.500px;color:var(--mute);margin:44px 0 10px">Specific revenue-sharing ratios</p><button class="btn" data-act="withdraw">Withdraw</button>
+      </div>
+    </section>
+
+    <div class="dim" id="dim" data-act="close"></div><div class="sheet" id="sheet"></div>
+    <div class="ptoast" role="status"></div><div class="homebar"></div>
+  </div></div>
+
+  <aside class="panel">
+    <h2 data-en="YOU ARE LOOKING AT" data-zh="当前页面">YOU ARE LOOKING AT</h2>
+    <div class="now" aria-live="polite"><small>CITYWEAVE · SCREEN</small><h3 id="now-title"></h3><p id="now-note"></p></div>
+    <div class="controls"><button id="restart" data-en="↺ Restart" data-zh="↺ 重新开始">↺ Restart</button><button id="hints" aria-pressed="false" data-en="Show tappable areas" data-zh="显示可点击区域">Show tappable areas</button></div>
+    <p class="hint-note" data-en="Tap anywhere on the phone. If nothing happens, the tappable areas flash blue. People, prices and balances are sample content." data-zh="在手机上任意点击。如果没有反应，可点击区域会闪烁蓝色提示。人物、价格与余额均为示例内容。">Tap anywhere on the phone. If nothing happens, the tappable areas flash blue. People, prices and balances are sample content.</p>
+  </aside>
+</section>
+
+<details class="case" id="case-study">
+  <summary><span data-en="Case study: research, stakeholder map, system map and boards" data-zh="设计案例：研究、利益相关者地图、系统地图与图版">Case study: research, stakeholder map, system map and boards</span><small data-en="6 boards · open to read" data-zh="6 张图版 · 点击展开">6 boards · open to read</small></summary>
+  <div class="case-body">
+    <div class="case-copy">
+      <div><h3 data-en="Weaving skills into everyday life" data-zh="让技能融入日常生活">Weaving skills into everyday life</h3><p data-en="The concept encourages young people to enrich their lifestyles through sustainable learning, while helping artisans expand their markets and circulate the value of their skills." data-zh="通过可持续学习丰富年轻人的生活方式，同时帮助手艺人拓展市场，让技能的价值流动起来。">The concept encourages young people to enrich their lifestyles through sustainable learning, while helping artisans expand their markets and circulate the value of their skills.</p></div>
+      <div><h3 data-en="What the research said" data-zh="研究发现">What the research said</h3><p data-en="Most young people are interested in hobby skills but rarely take part: limited time and energy, and little transparent information. They prefer in-person, short, small-group courses close to home at a reasonable price." data-zh="多数年轻人对兴趣技能有兴趣，却很少真正参与：时间精力有限，信息也不透明。他们偏好离家近、价格合理的线下短期小班课程。">Most young people are interested in hobby skills but rarely take part: limited time and energy, and little transparent information. They prefer in-person, short, small-group courses close to home at a reasonable price.</p></div>
+      <div><h3 data-en="From research to a connected service" data-zh="从研究到服务系统">From research to a connected service</h3><p data-en="The boards document background and user research, a stakeholder map, map illustrations, app flows, a storyboard, high-fidelity interfaces, and the service system map." data-zh="图版记录背景与用户研究、利益相关者地图、地图设计、应用流程、故事板、高保真界面以及服务系统地图。">The boards document background and user research, a stakeholder map, map illustrations, app flows, a storyboard, high-fidelity interfaces, and the service system map.</p></div>
+    </div>
+    <p class="note" data-en="Click a board to open the full-resolution original." data-zh="点击图版可打开原始分辨率大图。">Click a board to open the full-resolution original.</p>
+    <div class="boards" data-pages="30,31,32,33,34,35" data-name="Cityweave"></div>
+  </div>
+</details>
+<div class="more"><a href="index.html#work" data-en="← All work" data-zh="← 全部作品">← All work</a><a href="what-are-you-doing.html" data-en="← What are you doing?" data-zh="← What are you doing?">← What are you doing?</a><a href="inn-trovert.html" data-en="Inn-trovert →" data-zh="Inn-trovert →">Inn-trovert →</a></div>
+</main>
+<footer class="site"><span>© 2026 XIWEN YAN / ECHO</span><span data-en="Screens rebuilt in HTML from the original Figma boards." data-zh="界面依据原始 Figma 图版以 HTML 重建。">Screens rebuilt in HTML from the original Figma boards.</span><a href="index.html" data-en="Back to portfolio ↑" data-zh="返回作品集 ↑">Back to portfolio ↑</a></footer>
+
+<script src="proto.js"></script>
+<script>
+// Cityweave prototype. One wallet (yuan + skill coins) runs through map, workshop, market and profile.
+const {$,$$,go,toast,done}=Proto,A='assets/proto/cw/';
+const yen=n=>'¥ '+n.toLocaleString('en-US',{minimumFractionDigits:2});
+const fresh=()=>({coins:1500,able:1600,cart:[],orders:[],owned:new Set(),joined:new Set(),matched:new Set(),sel:'sophia',zoom:1,
+  props:[['Bike Lane Expansion','Proposed by Amelia Harper','bike',18],['Community Library','Proposed by Ethan Carter','book',31]]});
+let S=fresh();
+
+$$('.tabs').forEach(n=>{const cur=n.dataset.tab,tab=(id,label,icon)=>`<button data-go="${id}" data-root class="${id===cur?'cur':''}"><svg class="ic" viewBox="0 0 24 24">${icon}</svg>${label}</button>`;
+  n.innerHTML=tab('map','Map','<path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.500"/>')+tab('market','Market','<path d="M4 9l1.500-4h13L20 9M4 9v10h16V9M4 9h16M9 19v-5h6v5"/>')+tab('workshop','Workshop','<circle cx="9" cy="9" r="3"/><circle cx="16.500" cy="10" r="2.500"/><path d="M3 19c0-3 2.500-5 6-5s6 2 6 5m1-5c2.500 0 5 1.500 5 4"/>')+tab('my','MY','<circle cx="12" cy="8.500" r="3.500"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/>')});
+
+// ── Sheets
+function sheet(html){$('#sheet').innerHTML=html;$('#sheet').classList.add('show');$('#dim').classList.add('show');$('#sheet').scrollTop=0}
+function closeSheet(){$('#sheet').classList.remove('show');$('#dim').classList.remove('show')}
+const okMark='<div class="ok"><svg class="ic" viewBox="0 0 24 24"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg></div>';
+
+// ── Map: people nearby with a skill to trade
+const PEOPLE=[{id:'sophia',name:'Sophia Chen',skill:'Brewing Coffee',wants:'Drawing',x:150,y:330,img:'sophia.webp',dist:'350 m'},
+ {id:'marcus',name:'Marcus Lee',skill:'Film Photography',wants:'UI Design',x:286,y:214,c:'#5b8def',dist:'600 m'},
+ {id:'ana',name:'Ana Ruiz',skill:'Ceramics',wants:'Photography',x:96,y:468,c:'#e58a5b',dist:'900 m'},
+ {id:'wen',name:'Wen Zhao',skill:'Leather Craft',wants:'Coffee Brewing',x:318,y:372,c:'#57b894',dist:'1.1 km'}];
+function renderPins(q=''){const hit=p=>!q||(p.skill+p.name).toLowerCase().includes(q.toLowerCase());
+  $('#pins').innerHTML=PEOPLE.map(p=>`<g class="pin ${p.id===S.sel?'on':''}" data-act="pin" data-id="${p.id}" opacity="${hit(p)?1:.18}" transform="translate(${p.x} ${p.y})"><circle class="halo" r="10" fill="#e5484d" opacity="0"/><path d="M0 4c-6-7-10-11-10-16a10 10 0 0 1 20 0c0 5-4 9-10 16z" fill="${S.matched.has(p.id)?'#19a8e6':'#c8102e'}" stroke="#fff" stroke-width="1.500"/><circle cy="-12" r="3.600" fill="#fff"/><rect x="-22" y="-44" width="44" height="16" rx="8" fill="#fff" opacity="${p.id===S.sel?1:0}"/><text y="-32.500" text-anchor="middle" style="font-size:9px;font-weight:700;opacity:${p.id===S.sel?1:0}">${p.dist}</text></g>`).join('');
+  const first=PEOPLE.find(hit);if(q&&first&&!hit(PEOPLE.find(p=>p.id===S.sel))){S.sel=first.id;renderPins(q);renderPerson()}}
+function renderPerson(){const p=PEOPLE.find(p=>p.id===S.sel),m=S.matched.has(p.id);
+  $('#person').innerHTML=`<div class="top">${p.img?`<img class="face" src="${A+p.img}" alt="">`:`<span class="face" style="background:${p.c}">${p.name[0]}</span>`}<div><h3>${p.name}</h3><p>Exchange Skill:<br>${p.skill}</p></div></div><div class="two"><button class="btn or" data-act="exchange">${m?'Exchange requested ✓':'Initiate exchange'}</button><button class="btn soft" data-act="schedule">Schedule a Workshop</button></div>`}
+$('#q').addEventListener('input',e=>renderPins(e.target.value.trim()));
+
+// ── Workshop: courses
+const COURSES=[{id:'photo',t:'Advanced Photography Techniques',d:'Elevate your photography skills with advanced techniques.',p:79,img:'c1.webp',dist:2.4,time:3},
+ {id:'write',t:'Creative Writing Workshop',d:'Unleash your inner writer with this immersive workshop.',p:59,img:'c2.webp',dist:1.2,time:2},
+ {id:'paint',t:'Hand-painted Watercolor Plant Illustration',d:'Learn watercolor techniques, create exquisite plant illustrations, and unleash your artistic talent.',p:49,img:'c3.webp',dist:.35,time:1}];
+let sortBy='all',courseId='paint';
+function renderCourses(){const list=[...COURSES];if(sortBy==='dist')list.sort((a,b)=>a.dist-b.dist);if(sortBy==='time')list.sort((a,b)=>a.time-b.time);if(sortBy==='price')list.sort((a,b)=>a.p-b.p);
+  $('#courses').innerHTML=list.map(c=>`<button class="card course" data-act="course" data-id="${c.id}"><span><small>Paid · ${c.dist<1?c.dist*1000+' m':c.dist+' km'} · in ${c.time} day${c.time>1?'s':''}</small><h3>${c.t}</h3><p>${c.d}</p><span class="price ${S.owned.has(c.id)?'owned':''}">${S.owned.has(c.id)?'Enrolled':'¥'+c.p}</span></span><img src="${A+c.img}" alt=""></button>`).join('')}
+function renderCourse(){const c=COURSES.find(c=>c.id===courseId),own=S.owned.has(c.id);
+  $('#c-cover').src=A+c.img;$('#c-title').textContent=c.t;$('#c-desc').textContent=c.d;$('#c-prog').style.setProperty('--w',own?'60%':'0%');$('#c-step').textContent=own?'3/5':'0/5';
+  $('#c-buy').textContent=own?'Continue lesson 4':`Purchase Course · ¥${c.p}`}
+// ── City co-creation
+const PICON={bike:'<circle cx="6" cy="16" r="3.500"/><circle cx="18" cy="16" r="3.500"/><path d="M6 16l4-8h5l3 8M10 8l4 8"/>',book:'<path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v13c-3-1-6-1-8 1-2-2-5-2-8-1zM12 6v13"/>',spark:'<path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>'};
+function renderProps(newest){$('#props').innerHTML=S.props.map((p,i)=>`<button class="prop ${i===0&&newest?'new':''}" data-act="back" data-i="${i}"><i><svg class="ic" viewBox="0 0 24 24">${PICON[p[2]]}</svg></i><span>${p[0]}<small>${p[1]}</small></span><em>${p[3]} backers</em></button>`).join('')}
+// ── Market
+const GOODS=[{id:'leather',n:'Handcrafted leather',p:150,sold:12,img:'leather.webp',h:150,q:'“Excellent quality, available for customization.”',d:'This product is crafted from top-grain cowhide leather using a natural water-dyeing process without chemical fixatives. It features the natural, randomly distributed grain patterns inherent to genuine leather.',tags:['Customization','Buy two, get 20% off']},
+ {id:'illus',n:'Full-body illustration',p:850,sold:61,img:'illus.webp',h:96,q:'“It’s painted very quickly, and it’s exceptionally beautiful.”',d:'A commissioned full-body character illustration, drawn to your brief with two rounds of revisions and a print-ready file.',tags:['Commission','7-day delivery']},
+ {id:'ceramic',n:'Ceramic vessels',p:150,sold:24,img:'ceramic.webp',h:170,q:'“Each one is incredibly exquisite and beautiful.”',d:'Small-batch stoneware thrown and glazed by hand. No two pieces share the same glaze pattern.',tags:['Handmade','Pick-up nearby']},
+ {id:'camera',n:'cosplay Photography',p:150,sold:21,img:'camera.webp',h:150,q:'“Beautifully shot, really knows how to deliver emotional value.”',d:'A two-hour location shoot with twenty retouched photos, by a photographer who learned the craft through Cityweave workshops.',tags:['Service','Coins accepted']},
+ {id:'rings',n:'Silver rings',p:260,sold:9,img:'rings.webp',h:84,q:'“Simple and well finished.”',d:'Hand-forged sterling silver rings set with small stones, sized to order.',tags:['Made to order']}];
+let goodId='leather';
+function renderGoods(){$('#goods').innerHTML=GOODS.map(g=>`<button class="card good" data-act="good" data-id="${g.id}"><img src="${A+g.img}" alt="" style="height:${g.h}px"><q>${g.q}</q><b>${g.n}</b><span>¥${g.p}<small>${g.sold} items sold</small></span></button>`).join('')}
+function renderGood(){const g=GOODS.find(g=>g.id===goodId);
+  $('#pd').innerHTML=`<img src="${A+g.img}" alt="" style="width:100%;height:330px;object-fit:cover;display:block"><div style="padding:14px 20px"><b style="font-size:16px">${g.n}</b><p style="font-size:14px;font-weight:600;margin:6px 0 10px">¥${g.p} <small style="font-weight:500;font-size:10.500px;color:var(--mute);margin-left:10px">${g.sold} items sold</small></p>${g.tags.map(t=>`<span class="tag">${t}</span>`).join('')}<h2>Product Details</h2><p style="font-size:12.500px;line-height:1.65;color:#3a4650">${g.d}</p></div>`}
+function cartBadge(){const b=$('#cartn');b.textContent=S.cart.length;b.classList.toggle('on',S.cart.length>0)}
+const cartTotal=()=>S.cart.reduce((s,id)=>s+GOODS.find(g=>g.id===id).p,0);
+function cartSheet(){if(!S.cart.length)return sheet('<h4>Shopping Cart</h4><p>Your cart is empty. Open a product and tap “Add to Cart”.</p>');
+  sheet(`<h4>Shopping Cart</h4>${S.cart.map(id=>{const g=GOODS.find(g=>g.id===id);return `<div class="line"><img src="${A+g.img}" alt="">${g.n}<span>¥${g.p}</span></div>`}).join('')}<div class="line" style="border:0;font-size:15px">Total<span>¥${cartTotal()}</span></div>${payOptions(cartTotal())}<button class="btn or" style="margin-top:14px" data-act="checkout">Check out</button>`)}
+let payWith='yuan';
+const payOptions=amount=>{payWith='yuan';return `<div class="lbl">Pay with</div><button class="pay" aria-pressed="true" data-act="pay" data-w="yuan"><i>¥</i><span>¥${amount}<small>From your balance</small></span></button><button class="pay" aria-pressed="false" data-act="pay" data-w="coin"><i>¢</i><span>${amount*10} skill coins<small>You have ${S.coins} · earned by teaching</small></span></button>`};
+function settle(amount){if(payWith==='coin'){if(S.coins<amount*10){toast('Not enough skill coins. Teach a session to earn more.',2800);return false}S.coins-=amount*10}else{if(S.able<amount){toast('Not enough balance.');return false}S.able-=amount}renderWallet();return true}
+function renderWallet(){$('#coin-bal').textContent=S.coins;$('#bal').textContent=yen(S.able+53.8);$('#wd-able').textContent=yen(S.able)}
+
+const ACT={
+  soon(){toast('Not built out in this prototype.')},close:closeSheet,
+  zoom(el){S.zoom=Math.max(1,Math.min(2.2,S.zoom+(+el.dataset.d)*.4));$('#mapsvg').style.transform=`scale(${S.zoom})`},
+  pin(el){S.sel=el.dataset.id;renderPins($('#q').value.trim());renderPerson()},
+  exchange(){const p=PEOPLE.find(p=>p.id===S.sel);if(S.matched.has(p.id))return toast(`${p.name.split(' ')[0]} has your request. You’ll be notified when they reply.`,2800);
+    sheet(`<h4>Exchange with ${p.name.split(' ')[0]}</h4><p>An exchange is a trade, not a purchase: you each teach one session.</p><div class="lbl">${p.name.split(' ')[0]} can teach</div><div class="opts"><span class="opt" aria-pressed="true">${p.skill}</span></div><div class="lbl">${p.name.split(' ')[0]} wants to learn · you can teach</div><div class="opts" id="offer">${[p.wants,'UI Design','Drawing','Photography'].filter((v,i,a)=>a.indexOf(v)===i).map((s,i)=>`<button class="opt" aria-pressed="${!i}" data-act="offer">${s}${s===p.wants?' · match':''}</button>`).join('')}</div><div class="lbl">Where</div><div class="opts"><button class="opt" aria-pressed="true" data-act="offer1">Shared studio, ${p.dist}</button><button class="opt" aria-pressed="false" data-act="offer1">Café nearby</button></div><button class="btn or" style="margin-top:22px" data-act="send">Send exchange request</button>`)},
+  offer(el){$$('#offer .opt').forEach(o=>o.setAttribute('aria-pressed',o===el))},
+  offer1(el){$$('.opt',el.parentNode).forEach(o=>o.setAttribute('aria-pressed',o===el))},
+  send(){const p=PEOPLE.find(p=>p.id===S.sel),mine=$('#offer [aria-pressed=true]').textContent.replace(' · match','');S.matched.add(p.id);renderPins();renderPerson();done('match');
+    sheet(`${okMark}<h4 style="text-align:center">Request sent</h4><p style="text-align:center">You teach <b>${mine}</b>, ${p.name.split(' ')[0]} teaches <b>${p.skill}</b>.<br>Both of you earn 100 skill coins when the session is confirmed.</p><button class="btn" style="margin-top:20px" data-act="close">Back to map</button>`)},
+  schedule(){courseId='paint';go('course')},
+  wtab(el){const city=el.dataset.t==='city';$$('#wseg button').forEach(b=>b.setAttribute('aria-pressed',b===el));$('#w-paid').hidden=city;$('#w-city').hidden=!city},
+  sort(el){$$('#cfilter .chip2').forEach(b=>b.setAttribute('aria-pressed',b===el));sortBy=el.dataset.s;renderCourses()},
+  pf(el){$$('#pfilter .chip2').forEach(b=>b.setAttribute('aria-pressed',b===el));const f=el.dataset.f;$('#sec-on').hidden=!(f==='all'||f==='on');$('#sec-prop').hidden=!(f==='all'||f==='prop');$('#sec-done').hidden=f!=='done'},
+  course(el){courseId=el.dataset.id;go('course')},
+  buycourse(){const c=COURSES.find(c=>c.id===courseId);if(S.owned.has(c.id))return toast('Lesson 4 opens after your next studio session.',2600);
+    sheet(`<h4>${c.t}</h4><p>Five in-person sessions with Sophia Chen, small group, materials included.</p>${payOptions(c.p)}<button class="btn or" style="margin-top:16px" data-act="paycourse">Confirm purchase</button>`)},
+  pay(el){payWith=el.dataset.w;$$('.pay').forEach(b=>b.setAttribute('aria-pressed',b===el))},
+  paycourse(){const c=COURSES.find(c=>c.id===courseId),how=payWith;if(!settle(c.p))return;S.owned.add(c.id);renderCourse();renderCourses();done('course');$('#s-learn').textContent=12+S.owned.size;
+    sheet(`${okMark}<h4 style="text-align:center">You’re enrolled</h4><p style="text-align:center">Paid with ${how==='coin'?c.p*10+' skill coins':'¥'+c.p}. First session: Saturday 2 PM at the shared studio.</p><button class="btn" style="margin-top:20px" data-act="close">Done</button>`)},
+  join(el){const n=el.dataset.n;if(S.joined.has(n))return toast(`You’re already on the ${n} team.`);S.joined.add(n);toast(`Applied to ${n}. The organiser will match you to a task that fits your skills.`,3200)},
+  back(el){const p=S.props[+el.dataset.i];if(p[4])return toast('You already backed this proposal.');p[3]++;p[4]=true;renderProps();toast(`Backed “${p[0]}”. Proposals with 50 backers go to the district office.`,3200)},
+  propose(){sheet(`<h4>Propose a project</h4><p>Describe something your neighbourhood could build together. Neighbours back it with their skills.</p><div class="lbl">Project name</div><input class="field" id="pname" placeholder="e.g. Rooftop Repair Café" maxlength="40"><div class="lbl">Skills it needs</div><div class="opts">${['Carpentry','Gardening','Illustration','Organising'].map((s,i)=>`<button class="opt" aria-pressed="${i<1}" data-act="multi">${s}</button>`).join('')}</div><button class="btn" style="margin-top:22px" data-act="submitprop">Submit proposal</button>`);setTimeout(()=>$('#pname')?.focus({preventScroll:true}),350)},
+  multi(el){el.setAttribute('aria-pressed',el.getAttribute('aria-pressed')!=='true')},
+  submitprop(){const name=$('#pname').value.trim()||'Rooftop Repair Café';S.props.unshift([name,'Proposed by you · just now','spark',1,true]);closeSheet();renderProps(true);$('#w-city').scrollTop=9999;done('propose');toast('Proposal posted. You are its first backer.',2600)},
+  good(el){goodId=el.dataset.id;go('product')},
+  add(){S.cart.push(goodId);cartBadge();toast('Added to cart.',1400)},
+  buy(){if(!S.cart.includes(goodId))S.cart.push(goodId);cartBadge();cartSheet()},
+  cart:cartSheet,
+  checkout(){const total=cartTotal(),how=payWith,n=S.cart.length;if(!settle(total))return;S.orders.push(...S.cart);S.cart=[];cartBadge();done('cart');
+    sheet(`${okMark}<h4 style="text-align:center">Order placed</h4><p style="text-align:center">${n} item${n>1?'s':''}, paid with ${how==='coin'?total*10+' skill coins':'¥'+total}. The maker will confirm pick-up or delivery.</p><button class="btn" style="margin-top:20px" data-act="close">Done</button>`)},
+  orders(){sheet(`<h4>My Order</h4>${S.orders.length?S.orders.map(id=>{const g=GOODS.find(g=>g.id===id);return `<div class="line"><img src="${A+g.img}" alt="">${g.n}<span style="color:var(--blue);font-size:11px">Awaiting maker</span></div>`}).join(''):'<p>No orders yet.</p>'}`)},
+  coupons(){sheet('<h4>Coupons</h4><div class="line" style="border:0"><span style="margin:0"><b>20% off a second item</b><br><small style="color:var(--mute);font-weight:500">Handcrafted leather · applied at checkout</small></span></div>')},
+  coins(){sheet(`<h4>Skill coins</h4><div class="bal" style="margin:6px 0 4px">${S.coins}</div><p>Coins are earned by teaching and spent on learning. They can’t be bought, which keeps the exchange about skills.</p><div class="lbl">Earn more</div><div class="line">Teach a 1-to-1 session<span>+100</span></div><div class="line">Host a workshop<span>+300</span></div><div class="line">Join a city co-creation task<span>+150</span></div><button class="btn" style="margin-top:18px" data-go="workshop" data-root data-act="close">Spend coins on a course</button>`)},
+  withdraw(){sheet(`<h4>Withdraw to bank</h4><p>Withdrawable: ${yen(S.able)}</p><div class="lbl">Amount</div><input class="field" id="amt" inputmode="decimal" value="500.00" aria-label="Amount in yuan"><button class="btn" style="margin-top:18px" data-act="dowithdraw">Withdraw</button>`)},
+  dowithdraw(){const v=Math.round(parseFloat($('#amt').value)*100)/100;if(!(v>0))return toast('Enter an amount.');if(v>S.able)return toast(`You can withdraw up to ${yen(S.able)}.`,2600);S.able-=v;renderWallet();done('cash');
+    sheet(`${okMark}<h4 style="text-align:center">${yen(v)} on its way</h4><p style="text-align:center">Arrives in your bank account within one working day.</p><button class="btn" style="margin-top:20px" data-act="close">Done</button>`)}
+};
+$('.phone').addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(el&&ACT[el.dataset.act])ACT[el.dataset.act](el)});
+Proto.on(id=>{closeSheet();
+  if(id==='course')renderCourse();
+  if(id==='product')renderGood();
+  if(id==='workshop')renderCourses();
+});
+function renderAll(){renderPins();renderPerson();renderCourses();renderProps();renderGoods();renderWallet();cartBadge()}
+Proto.reset=()=>{S=fresh();sortBy='all';$('#q').value='';$('#mapsvg').style.transform='';$('#s-learn').textContent=12;ACT.wtab($('#wseg button'));renderAll();$$('.tasks .done').forEach(b=>b.classList.remove('done'))};
+renderAll();Proto.start();
+</script>
+</body></html>

@@ -1,0 +1,494 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inn-trovert — Clickable prototype · Xiwen (Echo) Yan</title>
+<meta name="description" content="Inn-trovert: a bar app for socially anxious guests. Tap through the prototype: set your social battery, customize a drink, answer a game invitation and follow a hidden mission.">
+<link rel="canonical" href="https://portfolio.xiwenyan.top/inn-trovert.html">
+<meta name="author" content="Xiwen Yan (Echo Yan)"><meta name="theme-color" content="#0de0b8">
+<meta property="og:type" content="article"><meta property="og:title" content="Inn-trovert — clickable prototype by Xiwen (Echo) Yan">
+<meta property="og:description" content="A gentler way into social connection. Tap through the bar app prototype.">
+<meta property="og:url" content="https://portfolio.xiwenyan.top/inn-trovert.html"><meta property="og:image" content="https://portfolio.xiwenyan.top/assets/inn-cover.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/avatar.png">
+<link rel="stylesheet" href="proto.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jersey+20&family=Jersey+15&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{--accent:#aaf43f}
+/* i² bar — screens rebuilt from the Inn-trovert UI kit: Jersey 20 + Inter, five loud colours on near-black */
+.inn{--teal:#0de0b8;--yellow:#ffeb00;--lime:#aaf43f;--pink:#f06aa9;--lpink:#f6a2c5;--blue:#00b4df;--cyan:#6fe6ee;--navy:#15129d;--bg:#050908;background:var(--bg);color:#fff;font-family:'Inter',sans-serif}
+.inn .screen{background:var(--bg)}
+.inn .j{font-family:'Jersey 20','Jersey 15',sans-serif;font-weight:400;letter-spacing:.3px}
+.inn .bar{display:flex;align-items:center;gap:12px;height:46px;padding:0 20px;border-bottom:1px solid #2a302e;font-family:'Jersey 20',sans-serif;font-size:21px;flex:none}
+.inn .bar button{display:grid;place-items:center;width:30px;height:30px}
+.inn .bar svg{width:24px;height:24px;fill:#fff}
+.inn .pad{padding:18px 22px 26px}
+.inn h2{font-family:'Jersey 20',sans-serif;font-weight:400;font-size:33px;line-height:1.02;letter-spacing:.3px}
+.inn .q{font-family:'Jersey 20',sans-serif;font-size:19px;margin:16px 0 8px;display:flex;align-items:baseline;gap:8px}
+.inn .q small{font-family:'Inter';font-size:10px;color:#b9c2be}
+.inn .who{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:600;line-height:1.35}
+.inn .ava{display:block;width:42px;height:42px;border-radius:50%;background:#f1dbe9;flex:none;overflow:hidden}
+.inn .ava svg{width:100%;height:100%;display:block}
+.inn hr{border:0;border-top:1px solid #2a302e;margin:16px -22px 0}
+.inn .grid{display:grid;gap:6px}.inn .g2{grid-template-columns:1fr 1fr}.inn .g3{grid-template-columns:repeat(3,1fr)}
+.inn .tile{position:relative;border-radius:6px;padding:10px;min-height:76px;color:var(--navy);font-family:'Jersey 20',sans-serif;font-size:17px;line-height:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:transform .12s,filter .12s,box-shadow .12s}
+.inn .tile:active{transform:scale(.96)}
+.inn .tile small{font-family:'Inter';font-size:9.5px;line-height:1.3;font-weight:500;opacity:.8}
+.inn .tile svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.inn .tile[aria-checked=true]{box-shadow:inset 0 0 0 3px #fff,0 0 0 2px #fff;z-index:1}
+.inn .tile[aria-checked=true]::after{content:'✓';position:absolute;right:6px;top:6px;width:18px;height:18px;border-radius:50%;background:#fff;color:#050908;font:700 11px/18px Inter,sans-serif;text-align:center;text-shadow:none}
+.c-teal{background:var(--teal)}.c-yellow{background:var(--yellow)}.c-lime{background:var(--lime)}.c-pink{background:var(--pink)}.c-lpink{background:var(--lpink)}.c-blue{background:var(--blue)}.c-cyan{background:var(--cyan)}.c-cream{background:#fff6a8}.c-purple{background:#a85be8}
+.inn .round{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:24px;font-weight:700}
+.inn .round svg{width:22px;height:22px;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.inn .nav2{display:flex;justify-content:center;gap:18px;padding:14px 0 30px;flex:none}
+.inn .pill{display:block;width:100%;padding:13px;border-radius:30px;background:var(--lime);color:#0a8f79;font-family:'Jersey 20',sans-serif;font-size:26px;text-align:center}
+.inn .pill.y{background:var(--yellow);color:#f0791f}
+.inn .fine{font-size:9.5px;color:#9aa5a0;text-align:center;margin-top:10px}
+/* personality tiles */
+.inn .persona{height:118px;align-items:flex-start;justify-content:flex-end;font-size:19px;overflow:hidden}
+.inn .persona.i{background:linear-gradient(105deg,var(--blue) 0 34%,#1466d8 34% 52%,var(--blue) 52%);color:#ff6a8a}
+.inn .persona.e{background:linear-gradient(180deg,var(--pink) 0 28%,#7b3fb8 28% 46%,var(--pink) 46% 62%,#7b3fb8 62% 80%,var(--pink) 80%);color:var(--yellow)}
+/* social battery */
+.inn .battery{position:relative;height:44px;border-radius:6px;background:#1f7f7d;overflow:hidden;display:grid;grid-template-columns:repeat(3,1fr)}
+.inn .battery i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--teal),#19f0cf);transition:width .25s cubic-bezier(.2,.8,.2,1)}
+.inn .battery button{position:relative;z-index:1;height:100%}
+.inn .levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:9.5px;font-weight:600;line-height:1.3;margin-top:8px}
+.inn .levels span{opacity:.5;transition:opacity .2s}.inn .levels span.on{opacity:1;color:var(--lime)}
+/* home */
+.inn .welcome{font-family:'Jersey 20',sans-serif;font-size:44px;line-height:1.12;padding:26px 30px 20px}
+.inn .welcome sup{font-size:.55em}
+.inn .big{height:226px;font-size:25px;align-items:flex-start;justify-content:center;text-align:left;padding:0 34px;line-height:1.05}
+.inn .mid{height:142px;align-items:flex-start;justify-content:flex-start;text-align:left;padding:14px 10px;font-size:19px}
+.inn .mid small{margin-top:14px;font-size:10px}
+.inn .tabs{flex:none;display:grid;grid-template-columns:repeat(4,1fr);background:#5b625f;padding:8px 6px 26px;border-radius:14px 14px 0 0}
+.inn .tabs button{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9.5px;font-weight:600;color:#fff}
+.inn .tabs i{width:40px;height:40px;border-radius:50%;background:#e9eceb;display:grid;place-items:center;transition:background .2s}
+.inn .tabs svg{width:22px;height:22px;fill:none;stroke:#2c3331;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.inn .tabs .cur i{background:var(--lime)}.inn .tabs .cur svg{stroke:#0a8f79}
+/* blend builder */
+.inn .abv{height:150px;overflow:hidden;align-items:stretch;justify-content:space-between;padding:8px 10px;color:#fff;text-shadow:2px 2px 0 rgba(0,0,0,.18)}
+.inn .abv::before{content:'';position:absolute;left:-18px;top:-10px;width:110px;height:110px;border-radius:50%;background:var(--yellow);opacity:.95}
+.inn .abv b{position:relative;font-weight:400;font-size:46px;line-height:.9;text-align:left}.inn .abv b+b{text-align:right}
+.inn .abv span{position:relative;font-size:16px;color:var(--navy);text-shadow:none;text-align:right}
+.inn .frag{height:100px;font-size:16px}.inn .taste{height:150px;font-size:21px}
+.inn .progress{display:flex;gap:5px;margin:10px 0 2px}.inn .progress i{flex:1;height:4px;border-radius:2px;background:#2a302e}.inn .progress i.on{background:var(--lime)}
+.inn .recipe{border-radius:10px;background:var(--teal);color:var(--navy);padding:18px;margin-top:14px}
+.inn .recipe h3{font-family:'Jersey 20',sans-serif;font-weight:400;font-size:30px;line-height:1}
+.inn .recipe dl{margin:14px 0 0;display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:13px}
+.inn .recipe dt{font-family:'Jersey 20',sans-serif;font-size:16px;color:#0b6b5b}.inn .recipe dd{margin:0;font-weight:600}
+.inn .glass{height:120px;display:grid;place-items:center;margin-top:16px}
+.inn .glass svg{height:120px}
+/* game */
+.inn .table{font-family:'Jersey 20',sans-serif;font-size:50px;line-height:1;color:#7d8683;display:flex;align-items:flex-end;justify-content:space-between}
+.inn .table small{font-family:'Inter';font-size:10px;color:#fff;padding-bottom:6px}
+.inn .seat{border-radius:6px;padding:9px 8px;color:var(--navy);font-size:10px;font-weight:600;text-align:center;line-height:1.5;position:relative;overflow:hidden}
+.inn .seat::before{content:attr(data-no);position:absolute;left:4px;top:-8px;font-family:'Jersey 20',sans-serif;font-size:38px;opacity:.22}
+.inn .seat button{display:block;width:74%;margin:4px auto 0;padding:3px;border-radius:3px;background:#fff;font-size:9.5px;font-weight:600;color:#333}
+.inn .seat button+button{background:#5b625f;color:#fff}
+.inn .seat button.sent{background:var(--navy);color:#fff}
+.inn .game{height:112px;font-size:14px}
+.inn .game i{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.35);display:grid;place-items:center;font-style:normal;font-size:22px;border:2px solid currentColor}
+.inn .deck{position:relative;width:250px;height:340px;margin:34px auto 0}
+.inn .deck::before,.inn .deck::after{content:'';position:absolute;inset:0;border-radius:8px}
+.inn .deck::before{background:var(--yellow);transform:rotate(-5deg) translate(6px,8px)}.inn .deck::after{background:var(--lime);transform:rotate(4deg) translate(4px,-2px)}
+.inn .draw{position:absolute;inset:0;z-index:1;border-radius:8px;background:var(--cyan);color:var(--navy);font-family:'Jersey 20',sans-serif;display:flex;flex-direction:column;align-items:center;padding:22px 24px;text-align:center;transform:rotate(-2deg)}
+.inn .draw.flip{animation:flip .45s cubic-bezier(.3,.7,.3,1)}
+@keyframes flip{0%{transform:rotate(-2deg) rotateY(0)}50%{transform:rotate(-2deg) rotateY(90deg) scale(1.04)}100%{transform:rotate(-2deg) rotateY(0)}}
+.inn .draw small{font-family:'Jersey 20';font-size:17px}
+.inn .draw b{font-weight:400;font-size:38px;line-height:1;margin:auto 0 10px}
+.inn .draw p{font-family:'Inter';font-weight:600;font-size:14px;line-height:1.45;margin-bottom:auto}
+.inn .draw.start b{margin:auto}
+.inn .count{text-align:center;font-family:'Jersey 20',sans-serif;font-size:16px;margin-top:30px}
+.inn .passrow{display:flex;justify-content:center;gap:10px;margin-top:14px}
+.inn .passrow button{font-size:11px;font-weight:600;padding:8px 14px;border-radius:20px;border:1px solid #4a524f;color:#cfd6d3}
+.inn .me{position:absolute;left:28px;bottom:44px}
+.inn .invite{position:absolute;inset:98px 0 0;z-index:5;display:grid;place-items:start center;padding-top:34px;background:rgba(5,9,8,.82);opacity:0;pointer-events:none;transition:opacity .25s}
+.inn .invite.show{opacity:1;pointer-events:auto}
+.inn .invite>div{width:262px;border-radius:14px;background:#e9ecec;color:#333;padding:18px 16px;text-align:center;box-shadow:-14px 10px 0 -4px #6a8f1e,14px -6px 0 -4px #2d7f86;transform:translateY(30px) scale(.9);transition:transform .35s cubic-bezier(.2,1.3,.4,1)}
+.inn .invite.show>div{transform:none}
+.inn .invite h4{margin:0 0 12px;font-family:'Jersey 20',sans-serif;font-weight:400;font-size:18px;color:#f08a1f}
+.inn .invite .ava{width:96px;height:96px;margin:0 auto 6px;background:#f6d5cc}
+.inn .invite .uid{font-size:10px;font-weight:600;line-height:1.5}
+.inn .invite .ask{margin:12px 0;padding:12px;border-radius:8px;background:#f8e8cf;font-size:11px;line-height:1.5}
+.inn .invite .ask b{display:block;font-family:'Jersey 20',sans-serif;font-weight:400;font-size:16px;color:#f08a1f;margin-bottom:4px}
+.inn .invite .yn{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.inn .invite .yn button{padding:14px;border-radius:5px;background:var(--cyan);color:#f06aa9;font-family:'Jersey 20',sans-serif;font-size:15px}
+.inn .invite .yn button+button{background:var(--pink);color:var(--cyan)}
+/* missions */
+.inn .brief{border-radius:4px;background:var(--lime);color:var(--navy);padding:22px 18px;font-size:11.5px;font-weight:600;line-height:1.75;margin-top:14px}
+.inn .brief p+p{margin-top:14px}.inn .brief .ask{font-family:'Jersey 20',sans-serif;font-size:17px;line-height:1.2;margin-top:26px}
+.inn .embark{display:flex;justify-content:space-between;align-items:center;width:100%;margin-top:14px;padding:16px 18px;border-radius:4px;background:var(--yellow);color:#f0541f;font-family:'Jersey 20',sans-serif;font-size:19px;line-height:1.05;text-align:left}
+.inn .hunt{display:block;width:100%;text-align:left;border-radius:4px;padding:18px 20px;margin-top:8px;font-family:'Jersey 20',sans-serif;font-size:17px;line-height:1.15;color:var(--navy);position:relative}
+.inn .hunt:first-child{padding:34px 20px}
+.inn .hunt small{display:block;font-size:13px;color:#f06aa9;margin-top:8px}
+.inn .hunt.found::after{content:'FOUND';position:absolute;right:12px;top:10px;font-size:12px;padding:2px 8px;border-radius:3px;background:var(--navy);color:#fff}
+.inn .hunt.sealed{filter:saturate(.3) brightness(.55)}
+.inn .clue{border-radius:4px;background:var(--teal);color:var(--navy);padding:44px 26px 34px;text-align:center;margin-top:14px}
+.inn .clue p{font-family:'Jersey 20',sans-serif;font-size:19px;line-height:1.25}
+.inn .clue .rule{display:flex;align-items:center;gap:10px;margin:30px 0;color:#0b8f7a}
+.inn .clue .rule::before,.inn .clue .rule::after{content:'';flex:1;border-top:1.5px dashed currentColor}
+.inn .clue .rule svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6}
+.inn .clue em{display:block;font-style:normal;font-size:11.5px;font-weight:600;line-height:1.6;color:#08695a}
+.inn .sub{font-size:10.5px;line-height:1.5;font-weight:500;margin-top:8px;color:#d7deda}
+.inn .card-won{display:block;width:230px;margin:6px auto 0;border-radius:6px;box-shadow:0 0 0 3px #fff,0 14px 40px rgba(13,224,184,.45);animation:won .6s cubic-bezier(.2,1.4,.4,1)}
+@keyframes won{from{transform:translateY(60px) rotate(-8deg) scale(.7);opacity:0}}
+/* achievements */
+.inn .achs{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.inn .ach{position:relative;min-height:66px;border-radius:4px;padding:8px 9px 22px;text-align:left;font-family:'Jersey 20',sans-serif;font-size:13px;line-height:1.1;color:var(--navy)}
+.inn .ach span{position:absolute;right:8px;bottom:6px;display:flex;align-items:center;gap:5px;font-family:'Inter';font-size:9px;font-weight:700}
+.inn .ach svg{width:16px;height:16px;fill:currentColor}
+.inn .ach.locked{filter:saturate(.35) brightness(.45)}
+.inn .ach.new{animation:pop .5s cubic-bezier(.2,1.5,.4,1)}@keyframes pop{from{transform:scale(.8)}}
+.inn .badge{border-radius:4px;background:var(--teal);color:var(--navy);padding:14px;text-align:center}
+.inn .badge img{display:block;width:100%;border-radius:3px}
+.inn .badge h3{font-family:'Jersey 20',sans-serif;font-weight:400;font-size:27px;letter-spacing:1px;text-transform:uppercase;margin:10px 0}
+.inn .badge .won{border-radius:4px;background:#0d8f79;color:#fff;padding:12px;font-size:10.5px;font-weight:600;line-height:1.5}
+.inn .badge .won b{display:block;font-family:'Jersey 20',sans-serif;font-weight:400;font-size:19px;margin-bottom:6px}
+.inn .badge .how{text-align:left;font-family:'Jersey 20',sans-serif;font-size:15px;line-height:1.25;margin:12px 0}
+.inn .badge .clues{border-radius:4px;background:var(--lime);padding:14px;text-align:left;font-family:'Jersey 20',sans-serif;font-size:15px;line-height:1.3}
+.inn .badge .clues small{display:block;font-family:'Inter';font-size:10.5px;font-weight:600;margin-bottom:10px}
+.inn .badge.locked{background:#5f5b12;color:#e9e7c4}.inn .badge.locked img{filter:grayscale(1) brightness(.35) contrast(1.4)}
+.inn .badge.locked .clues{background:#7f8f24;color:#f3f6d8;text-align:center;font-family:'Inter';font-size:11.5px;font-weight:600;line-height:1.6}
+.inn .badge.locked .clues b{display:block;margin-bottom:12px}
+/* account */
+.inn .fields{flex:1;display:grid;gap:5px}
+.inn .fields span{display:flex;justify-content:space-between;padding:5px 10px;border-radius:4px;font-size:10px;font-weight:600;color:var(--navy)}
+.inn .banner{margin:16px -22px;padding:22px;height:112px;background:radial-gradient(120% 140% at 80% 40%,#b06ad9 0,#3a7f8f 40%,#12201d 78%);font-family:'Jersey 20',sans-serif;font-size:19px;color:var(--teal)}
+.inn .banner small{display:block;font-size:13px;color:#fff}
+.inn .acct .tile{min-height:84px;font-size:15px}
+</style></head><body>
+<a class="skip" href="#prototype" data-en="Skip to the prototype" data-zh="跳到原型">Skip to the prototype</a>
+<header class="site"><a class="wordmark" href="index.html">echo<span>®</span><small>Xiwen Yan / Echo</small></a><nav aria-label="Main navigation"><a href="index.html#work" data-en="Work" data-zh="作品">Work</a><a href="index.html#play" data-en="Playground" data-zh="实验场">Playground</a><a href="index.html#about" data-en="About" data-zh="关于">About</a></nav><button id="language" aria-label="Switch to Chinese">中 / EN</button></header>
+
+<main>
+<section class="intro">
+  <div>
+    <div class="tags"><span class="chip accent" data-en="CLICKABLE PROTOTYPE" data-zh="可点击原型">CLICKABLE PROTOTYPE</span><span class="chip">UX RESEARCH</span><span class="chip">SERVICE DESIGN</span></div>
+    <h1>Inn-trovert</h1>
+  </div>
+  <div>
+    <p class="lead" data-en="A bar app for people who want company on their own terms. Guests set how open they are to invitations, then order, play and explore at that pace." data-zh="一个让人按自己的节奏参与社交的酒吧应用。客人先设定自己愿意被邀请的程度，再以这个节奏点单、游戏和探索。">A bar app for people who want company on their own terms. Guests set how open they are to invitations, then order, play and explore at that pace.</p>
+    <div class="facts"><span><b data-en="ROLE" data-zh="角色">ROLE</b><span data-en="Independent UX &amp; service designer" data-zh="独立 UX 与服务设计">Independent UX &amp; service designer</span></span><span><b data-en="PERIOD" data-zh="时间">PERIOD</b>JUN — OCT 2025</span><span><b data-en="RESEARCH" data-zh="研究">RESEARCH</b><span data-en="68 survey responses · 3 test participants" data-zh="68 份问卷 · 3 位测试参与者">68 survey responses · 3 test participants</span></span></div>
+  </div>
+</section>
+
+<section class="stage" id="prototype">
+  <aside class="panel">
+    <h2 data-en="TRY THIS" data-zh="试试这些">TRY THIS</h2>
+    <ol class="tasks">
+      <li><button data-go="reg1" data-screens="reg1,reg2" data-task="reg"><b data-en="Set your social battery" data-zh="设定你的社交电量">Set your social battery</b><span data-en="Register, then choose how much you want to be invited." data-zh="注册，并选择你愿意被邀请的程度。">Register, then choose how much you want to be invited.</span></button></li>
+      <li><button data-go="flavor" data-screens="flavor,alcohol,fragrance,taste,blend" data-task="blend"><b data-en="Customize a signature blend" data-zh="定制一杯专属特调">Customize a signature blend</b><span data-en="Order without reading a menu or talking to anyone." data-zh="不用看酒单，也不用开口，就能点一杯。">Order without reading a menu or talking to anyone.</span></button></li>
+      <li><button data-go="join" data-screens="join,select,play" data-task="game"><b data-en="Draw a card, get an invitation" data-zh="抽一张牌，收到邀请">Draw a card, get an invitation</b><span data-en="Play at your table. An invitation arrives if your battery allows it." data-zh="在本桌开始游戏；电量允许时，会收到其他桌的邀请。">Play at your table. An invitation arrives if your battery allows it.</span></button></li>
+      <li><button data-go="mission" data-screens="mission,hunts,clue,reward" data-task="hunt"><b data-en="Follow a hidden mission" data-zh="完成一个隐藏任务">Follow a hidden mission</b><span data-en="A treasure hunt gives you a reason to walk around alone." data-zh="寻宝任务，让一个人在店里走动也有理由。">A treasure hunt gives you a reason to walk around alone.</span></button></li>
+      <li><button data-go="ach" data-screens="ach,achd" data-task="ach"><b data-en="Check your achievements" data-zh="查看成就">Check your achievements</b><span data-en="What you did above is recorded here." data-zh="上面做过的事，都会记录在这里。">What you did above is recorded here.</span></button></li>
+    </ol>
+  </aside>
+
+  <div class="device"><div class="phone inn" data-start="reg1">
+    <div class="statusbar"><span>9:41</span><svg viewBox="0 0 70 14"><rect x="0" y="9" width="3" height="5" rx="1"/><rect x="5" y="6" width="3" height="8" rx="1"/><rect x="10" y="3" width="3" height="11" rx="1"/><rect x="15" y="0" width="3" height="14" rx="1"/><path d="M33 3.2c3 0 5.600 1.200 7.500 3.100l-1.500 1.500a8.400 8.400 0 0 0-12 0l-1.500-1.500A10.600 10.600 0 0 1 33 3.200zm0 4.200c1.800 0 3.400.7 4.600 1.900L33 14l-4.600-4.700A6.500 6.500 0 0 1 33 7.400z"/><rect x="47" y="1" width="21" height="12" rx="3.500"/></svg></div>
+
+    <!-- Registration -->
+    <section class="screen" data-screen="reg1" data-title="Registration guide" data-title-zh="注册引导" data-note-en="Scanning the table QR code opens this. It asks only what the bar needs to match people, and every question can be left undisclosed." data-note-zh="扫描桌上的二维码后进入。只询问匹配所需的信息，每一项都可以选择不透露。">
+      <div class="scroll"><div class="pad">
+        <h2>Welcome to i<sup>2</sup> bar</h2>
+        <div class="who" style="margin-top:10px"><span class="ava"><svg viewBox="0 0 42 42"><use href="#ava"/></svg></span><span>Albedo<br>uid : 13545865</span></div>
+        <div class="q">Your personality ?</div>
+        <div class="grid g2" role="radiogroup" data-key="persona"><button class="tile persona i" role="radio" aria-checked="true">Introversion</button><button class="tile persona e" role="radio" aria-checked="false">Extraversion</button></div>
+        <hr><div class="q">Your gender ?</div>
+        <div class="grid g3" role="radiogroup" data-key="gender"><button class="tile c-teal" role="radio" aria-checked="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M12 15v7M8.500 19h7"/></svg><small>female</small></button><button class="tile c-lime" role="radio" aria-checked="false"><svg viewBox="0 0 24 24"><circle cx="10" cy="14" r="6"/><path d="M14.500 9.500 21 3m-5 0h5v5"/></svg><small>male</small></button><button class="tile c-pink" role="radio" aria-checked="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 11a4 4 0 0 1 7-2m1 4a4 4 0 0 1-7 2M15 6v3h-3M9 18v-3h3"/></svg><small>No disclosure</small></button></div>
+        <hr><div class="q">Your sexual orientation? <small>(Multiple selections allowed)</small></div>
+        <div class="grid g3" data-multi><button class="tile c-yellow" aria-checked="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M12 15v7M8.500 19h7"/></svg><small>female</small></button><button class="tile c-cyan" aria-checked="false"><svg viewBox="0 0 24 24"><circle cx="10" cy="14" r="6"/><path d="M14.500 9.500 21 3m-5 0h5v5"/></svg><small>male</small></button><button class="tile c-teal" aria-checked="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 11a4 4 0 0 1 7-2m1 4a4 4 0 0 1-7 2M15 6v3h-3M9 18v-3h3"/></svg><small>No disclosure</small></button></div>
+      </div></div>
+      <div class="nav2"><button class="round c-blue" data-go="reg2" aria-label="Next"><svg viewBox="0 0 24 24" stroke="#ffeb00"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button></div>
+    </section>
+
+    <section class="screen" data-screen="reg2" data-title="Social battery" data-title-zh="社交电量" data-note-en="The core setting. In the survey, most passive participants said they rarely start a conversation but will join when invited. This slider decides whether the app may interrupt you. Try “Low battery”, then play a game." data-note-zh="核心设置。问卷中，多数被动参与者表示很少主动开口，但被邀请时愿意加入。这个滑块决定应用是否可以打扰你。试试选「低电量」，再去玩一局游戏。">
+      <div class="scroll"><div class="pad">
+        <h2>Welcome to i<sup>2</sup> bar</h2>
+        <div class="who" style="margin-top:10px"><span class="ava"><svg viewBox="0 0 42 42"><use href="#ava"/></svg></span><span>Albedo<br>uid : 13545865</span></div>
+        <div class="q" style="font-size:17px;line-height:1.15">Would you like to be interrupted (invited) during your drinking session?</div>
+        <div class="battery" id="battery"><i style="width:66.6%"></i><button data-act data-level="2" aria-label="High energy"></button><button data-act data-level="1" aria-label="Moderate"></button><button data-act data-level="0" aria-label="Low battery"></button></div>
+        <div class="levels" id="levels"><span>High Energy (Active Engagement)</span><span class="on">Moderate (as circumstances permit)</span><span>Low battery (prefer not to be disturbed)</span></div>
+        <hr><div class="q">The game genre you prefer ?</div>
+        <div class="grid g3" data-multi><button class="tile c-lime" aria-checked="false"><small>Werewolf</small></button><button class="tile c-blue" aria-checked="true"><small>Truth or Dare</small></button><button class="tile c-yellow" aria-checked="false"><small>Rock-Paper-Scissors</small></button><button class="tile c-teal" aria-checked="false"><small>Touring Gardens</small></button><button class="tile c-pink" aria-checked="false"><small>Competitive Board Game</small></button><button class="tile c-lime" aria-checked="false"><small>“Don’t Do It” Challenge</small></button></div>
+        <hr style="margin-bottom:20px">
+        <button class="pill" data-act="register">Completed</button>
+        <p class="fine">You can modify your settings anytime in [Account].</p>
+      </div></div>
+    </section>
+
+    <!-- Home -->
+    <section class="screen" data-screen="home" data-title="Home" data-title-zh="首页" data-note-en="Two things a guest came for on top, three low-pressure ways to join in below. Nothing here requires talking to a stranger first." data-note-zh="上方是客人原本就要做的两件事，下方是三种低压力的参与方式。这里没有任何一步需要先和陌生人开口。">
+      <div class="bar" style="border-bottom-color:#fff"><svg viewBox="0 0 24 24"><path d="M3 5h18v2.500H3zm0 5.800h18v2.500H3zm0 5.700h18V19H3z"/></svg></div>
+      <div class="scroll">
+        <div class="welcome">Welcome to<br>i<sup>2</sup> bar</div>
+        <div class="grid g2" style="padding:0 16px"><button class="tile c-yellow big" data-go="flavor">Order<br>Meals</button><button class="tile c-blue big" data-act="soon" style="color:var(--lime)">Latest<br>Events</button></div>
+        <div class="q" style="padding:0 16px;font-size:16px">Looking for some fun? ↓</div>
+        <div class="grid g3" style="padding:0 16px 16px"><button class="tile c-lime mid" data-go="flavor" style="color:#0a8f79">Impression Beverages<small>Not sure what to drink? Go for this one.</small></button><button class="tile c-blue mid" data-go="join" style="color:var(--lime)">Start Game<small style="color:#0b5b8f">A variety of games for you to choose from</small></button><button class="tile c-teal mid" data-go="mission" style="color:var(--pink)">Hidden Mission<small style="color:#0b6b5b">Uncovering the Secrets of Bars</small></button></div>
+      </div>
+      <nav class="tabs" data-tab="home"></nav>
+    </section>
+
+    <!-- Impression Beverages -->
+    <section class="screen" data-screen="flavor" data-title="Impression Beverages · flavour" data-title-zh="印象特调 · 口味" data-note-en="Ordering is the first awkward moment in a bar. Instead of a wine list, guests describe what they like in plain words." data-note-zh="点单是酒吧里第一个尴尬时刻。这里不给酒单，而是让客人用日常的词描述自己喜欢什么。">
+      <div class="bar"><button data-back aria-label="Back"><svg viewBox="0 0 24 24"><use href="#back"/></svg></button>Impression Beverages</div>
+      <div class="scroll"><div class="pad"><h2 style="font-size:29px">Customize your signature blend.</h2><div class="progress"><i class="on"></i><i></i><i></i><i></i></div>
+        <div class="q">Preferred flavor? <small>(Please select 1–2 options)</small></div>
+        <div class="grid g2" data-multi data-max="2" data-key="flavor"><button class="tile c-teal" style="height:104px" aria-checked="true" data-v="Sour">Sour<small>Lime, yogurt, lemon, kombucha, etc.</small></button><button class="tile c-cyan" style="height:104px" aria-checked="false" data-v="Sweet">Sweet<small>Honey, flavored syrups, sucrose, maltose, etc.</small></button><button class="tile c-yellow" style="height:104px" aria-checked="false" data-v="Bitter">Bitter<small>Coffee, bitters, tea, dark chocolate, tonic water, etc.</small></button><button class="tile c-lime" style="height:104px" aria-checked="false" data-v="Spicy">Spicy<small>Cinnamon, pepper, chili peppers, ginger, etc.</small></button><button class="tile c-blue" style="height:104px;color:var(--yellow)" aria-checked="false" data-v="Salty">Salty<small>Sea salt, olives, cheese, preserved plums, etc.</small></button><button class="tile c-lime" style="height:104px;background:#d4fb8a" aria-checked="false" data-v="Savory">Savory<small>Kelp, nori, dried scallops, beef broth, etc.</small></button></div>
+      </div></div>
+      <div class="nav2"><button class="round c-blue" data-go="alcohol" aria-label="Next"><svg viewBox="0 0 24 24" stroke="#ffeb00"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button></div>
+    </section>
+    <section class="screen" data-screen="alcohol" data-title="Impression Beverages · alcohol" data-title-zh="印象特调 · 酒精度" data-note-en="Alcohol content is described by how it feels, so nobody has to admit they don’t know what 15% means." data-note-zh="酒精度用「感觉」来描述，没有人需要承认自己不清楚 15% 意味着什么。">
+      <div class="bar"><button data-back aria-label="Back"><svg viewBox="0 0 24 24"><use href="#back"/></svg></button>Impression Beverages</div>
+      <div class="scroll"><div class="pad"><h2 style="font-size:29px">Customize your signature blend.</h2><div class="progress"><i class="on"></i><i class="on"></i><i></i><i></i></div>
+        <div class="q">Alcohol Content ?</div>
+        <div class="grid g2" role="radiogroup" data-key="abv"><button class="tile abv c-teal" role="radio" aria-checked="true" data-v="A little tipsy · 3–5%"><b>3%</b><span>A little tipsy</span><b>–5%</b></button><button class="tile abv c-lime" role="radio" aria-checked="false" data-v="A little drunk · 5–15%"><b>5%–</b><span>A little drunk</span><b>15%</b></button><button class="tile abv c-pink" role="radio" aria-checked="false" data-v="Got so drunk · 15–30%"><b>15%</b><span>Got so drunk</span><b>–30%</b></button><button class="tile abv c-blue" role="radio" aria-checked="false" data-v="Dead drunk · 30–55%"><b>30%</b><span>Dead drunk</span><b>–55%</b></button></div>
+      </div></div>
+      <div class="nav2"><button class="round c-yellow" data-back aria-label="Previous"><svg viewBox="0 0 24 24" stroke="#00b4df"><path d="M20 12H5m6-6-6 6 6 6"/></svg></button><button class="round c-blue" data-go="fragrance" aria-label="Next"><svg viewBox="0 0 24 24" stroke="#ffeb00"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button></div>
+    </section>
+    <section class="screen" data-screen="fragrance" data-title="Impression Beverages · fragrance" data-title-zh="印象特调 · 香气" data-note-en="Nine fragrances, pick up to two. Selecting a third swaps out the oldest, so there is no error state to recover from." data-note-zh="九种香气，最多选两种。选第三个时会自动替换最早的选择，不会出现需要纠错的状态。">
+      <div class="bar"><button data-back aria-label="Back"><svg viewBox="0 0 24 24"><use href="#back"/></svg></button>Impression Beverages</div>
+      <div class="scroll"><div class="pad"><h2 style="font-size:29px">Customize your signature blend.</h2><div class="progress"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+        <div class="q">Fragrance Type ? <small>(Please select 1–2 options)</small></div>
+        <div class="grid g3" data-multi data-max="2" data-key="fragrance"><button class="tile frag c-teal" aria-checked="true" data-v="Jasmine">Jasmine</button><button class="tile frag c-lime" aria-checked="false" data-v="Green Grapes">Green Grapes</button><button class="tile frag c-blue" style="color:#fff" aria-checked="false" data-v="White Peach">White Peach</button><button class="tile frag c-lime" aria-checked="false" data-v="Osmanthus">Osmanthus</button><button class="tile frag c-teal" aria-checked="false" data-v="Green Lime">Green Lime</button><button class="tile frag c-lpink" aria-checked="false" data-v="Melon">Melon</button><button class="tile frag c-lpink" aria-checked="false" data-v="Coconut">Coconut</button><button class="tile frag c-cyan" aria-checked="false" data-v="Peppermint">Peppermint</button><button class="tile frag c-cream" style="color:var(--pink)" aria-checked="false" data-v="Rose">Rose</button></div>
+      </div></div>
+      <div class="nav2"><button class="round c-yellow" data-back aria-label="Previous"><svg viewBox="0 0 24 24" stroke="#00b4df"><path d="M20 12H5m6-6-6 6 6 6"/></svg></button><button class="round c-blue" data-go="taste" aria-label="Next"><svg viewBox="0 0 24 24" stroke="#ffeb00"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button></div>
+    </section>
+    <section class="screen" data-screen="taste" data-title="Impression Beverages · texture" data-title-zh="印象特调 · 口感" data-note-en="The last step is texture. Four taps in total and the order goes to the bartender without a word spoken." data-note-zh="最后一步是口感。总共点四下，订单就送到调酒师那里，全程不用开口。">
+      <div class="bar"><button data-back aria-label="Back"><svg viewBox="0 0 24 24"><use href="#back"/></svg></button>Impression Beverages</div>
+      <div class="scroll"><div class="pad"><h2 style="font-size:29px">Customize your signature blend.</h2><div class="progress"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+        <div class="q">Taste preferences ?</div>
+        <div class="grid g2" role="radiogroup" data-key="taste"><button class="tile taste c-teal" role="radio" aria-checked="true" data-v="Bubble"><svg viewBox="0 0 24 24" style="width:54px;height:54px;stroke:#ffeb00;fill:#ffeb00"><circle cx="14" cy="6" r="4"/><circle cx="8" cy="14" r="3"/><circle cx="14" cy="20" r="2.200"/></svg>Bubble</button><button class="tile taste c-cyan" role="radio" aria-checked="false" data-v="Foam"><svg viewBox="0 0 24 24" style="width:54px;height:54px;stroke:#15129d;fill:#aaf43f"><path d="M5 16a3.500 3.500 0 0 1 1-6.900 5 5 0 0 1 9.500-1A4 4 0 0 1 18 16h-5v3.500h-3V16z"/><circle cx="19" cy="4" r="1.800" fill="none"/></svg>Foam</button><button class="tile taste c-yellow" role="radio" aria-checked="false" data-v="Oils"><svg viewBox="0 0 24 24" style="width:54px;height:54px;stroke:#f08a1f;fill:#f08a1f"><path d="M10 2c3.500 4.500 6 7.500 6 11a6 6 0 0 1-12 0c0-3.500 2.500-6.500 6-11z"/><path d="M18 9c1.600 2.200 3 4 3 6a3.500 3.500 0 0 1-3 3.500" fill="none"/></svg>Oils</button><button class="tile taste c-lime" role="radio" aria-checked="false" data-v="Ice"><svg viewBox="0 0 24 24" style="width:54px;height:54px;stroke:#00b4df;fill:#c9f6ff"><rect x="8" y="2.500" width="9" height="9" rx="1.500"/><rect x="3" y="12" width="9" height="9" rx="1.500"/><rect x="13" y="12" width="9" height="9" rx="1.500"/></svg>Ice</button></div>
+      </div></div>
+      <div class="nav2"><button class="round c-yellow" data-back aria-label="Previous"><svg viewBox="0 0 24 24" stroke="#00b4df"><path d="M20 12H5m6-6-6 6 6 6"/></svg></button><button class="round c-blue" data-act="mix" aria-label="Mix"><svg viewBox="0 0 24 24" stroke="#ffeb00"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button></div>
+    </section>
+    <section class="screen" data-screen="blend" data-title="Your signature blend" data-title-zh="你的专属特调" data-note-en="This confirmation screen is added for the web prototype so the flow has an ending. The original boards stop at the fourth selection." data-note-zh="这个确认页是为网页原型补充的，让流程有一个结尾。原始图版在第四步选择处结束。">
+      <div class="bar"><button data-back aria-label="Back"><svg viewBox="0 0 24 24"><use href="#back"/></svg></button>Impression Beverages</div>
+      <div class="scroll"><div class="pad">
+        <div class="glass"><svg viewBox="0 0 120 120"><path d="M20 14h80L64 62v38h22v8H34v-8h22V62z" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><path id="liquid" d="M32 28h56L60 62z" fill="#0de0b8"/><circle cx="92" cy="18" r="9" fill="#ffeb00"/></svg></div>
+        <div class="recipe"><h3 id="blend-name">Table C05 blend</h3><dl id="blend-list"></dl></div>
+        <button class="pill" style="margin-top:14px" data-act="order">Send to bartender</button>
+        <p class="fine">Served to table C05. Saved under Account → History Blend.</p>
+      </div></div>
+    </section>
+
+    <!-- Game -->
+    <section class="screen" data-screen="join" data-title="Join the game" data-title-zh="加入游戏" data-note-en="Other tables show only headcount and game, never faces. “Apply to join” and “Invite them” are both one tap and can be declined on the other side without confrontation." data-note-zh="其他桌只显示人数和正在玩的游戏，不显示面孔。「申请加入」和「邀请他们」都只需一次点击，对方也可以无需当面拒绝。">
+      <div class="bar"><button data-back aria-label="Back"><svg viewBox="0 0 24 24"><use href="#back"/></svg></button>Game</div>
+      <div class="scroll"><div class="pad" style="padding-top:8px">
+        <div class="table">C05<small>Currently at the table---2 people</small></div>
+        <div class="grid g2" id="seats" style="margin-top:8px"></div>
+        <button class="pill" style="margin-top:14px;background:var(--cyan);color:var(--navy);font-size:22px;border-radius:8px" data-go="select">Right at this table<span style="display:block;font-family:Inter;font-size:9px;font-weight:600">Scan the QR code on the table to join this table.</span></button>
+      </div></div>
+    </section>
+    <section class="screen" data-screen="select" data-title="Select a game" data-title-zh="选择游戏" data-note-en="Nine formats, from talk-heavy to almost silent. The survey showed which formats people actually prefer; Truth or Dare is playable here." data-note-zh="九种游戏形式，从需要大量交谈到几乎不用说话。问卷显示了人们实际偏好的形式；这里可以试玩真心话大冒险。">
+      <div class="bar"><button data-back aria-label="Back"><svg viewBox="0 0 24 24"><use href="#back"/></svg></button>Game</div>
+      <div class="scroll"><div class="pad" style="padding-top:8px">
+        <div class="table">C05<small>Currently at the table---4 people</small></div>
+        <div class="grid g3" style="margin-top:8px"><button class="tile game c-teal" data-act="soon"><i style="color:#f0791f">W</i>Werewolf</button><button class="tile game c-lime" data-go="play"><i>♥</i>Truth or Dare</button><button class="tile game c-blue" data-act="soon" style="color:var(--yellow)"><i>✌</i>Rock-Paper-Scissors</button><button class="tile game c-lime" data-act="soon"><i>#</i>Touring Gardens</button><button class="tile game c-teal" data-act="soon"><i>♠</i>Competitive Board Game</button><button class="tile game c-yellow" data-act="soon"><i>!</i>“Don’t Do It” Challenge</button><button class="tile game c-yellow" data-act="soon"><i>◷</i>Timed Game</button><button class="tile game c-blue" data-act="soon" style="color:var(--lime)"><i>✕</i>Chicken Game</button><button class="tile game c-lime" data-act="soon"><i style="color:var(--pink)">●</i>Digital Bomb</button></div>
+        <div class="who" style="margin-top:22px"><span class="ava"><svg viewBox="0 0 42 42"><use href="#ava"/></svg></span><span>Albedo<br>uid : 13545865</span></div>
+      </div></div>
+    </section>
+    <section class="screen" data-screen="play" data-title="Truth or Dare" data-title-zh="真心话大冒险" data-note-en="Tap the deck to draw. After two cards an invitation from another table arrives. In testing, participants asked for clearer invitation timing, so it now waits for a pause between cards, and stays silent on Low battery." data-note-zh="点击牌堆抽牌。抽过两张后，会收到另一桌的邀请。测试中参与者希望邀请出现的时机更清晰，因此它会等到两张牌之间的间隙才出现；低电量模式下则保持安静。">
+      <div class="bar"><button data-back aria-label="Back"><svg viewBox="0 0 24 24"><use href="#back"/></svg></button>Game</div>
+      <div class="deck"><button class="draw start" id="draw" data-act="draw"><small>Truth or Dare</small><b>Click to<br>start<br>drawing</b></button></div>
+      <div class="count">Current people number : 3</div>
+      <div class="passrow"><button data-act="pass">Pass · no penalty</button></div>
+      <div class="who me"><span class="ava"><svg viewBox="0 0 42 42"><use href="#ava"/></svg></span><span>Albedo<br>uid : 13545865</span></div>
+      <div class="invite" id="invite"><div>
+        <h4>An invitation has arrived!</h4>
+        <span class="ava"><svg viewBox="0 0 42 42"><use href="#ava2"/></svg></span>
+        <p class="uid">Anthony<br>uid : 58434651</p>
+        <div class="ask"><b>Invitation to complete the task:</b>Find strangers also drinking, clink glasses with them, and each say a simple toast.</div>
+        <div class="yn"><button data-act="accept">Accept</button><button data-act="refuse">Refuse</button></div>
+      </div></div>
+    </section>
+
+    <!-- Hidden mission -->
+    <section class="screen" data-screen="mission" data-title="Mission briefing" data-title-zh="任务简报" data-note-en="A story gives a solo guest a role. Walking around the bar alone stops looking odd when you are visibly on a quest." data-note-zh="故事给独自前来的客人一个角色。当你明显在「做任务」时，一个人在店里走动就不再显得奇怪。">
+      <div class="bar"><button data-back aria-label="Back"><svg viewBox="0 0 24 24"><use href="#back"/></svg></button>Hidden Mission</div>
+      <div class="scroll"><div class="pad"><h2 style="color:var(--yellow)">&gt;Welcome,<br>fortunate guest.</h2>
+        <div class="brief"><p>&gt; Beneath your feet lies a tavern unlike any ordinary drinking establishment. It is a vessel holding countless logbooks, mechanical blueprints, alchemical secrets, and unfinished poems.</p><p>&gt; Each of its former owners—a retired captain, a fanatical mechanic, a mysterious collector—has hidden their most treasured keepsake here, leaving clues for truly curious souls to uncover.</p><p>&gt; Your quest will be not merely to find objects, but to continue writing this tavern’s history.</p><p class="ask">Are you ready to become the new character in this story?</p></div>
+        <button class="embark" data-go="hunts"><span>Embark on the Path<br>of Exploration</span><span>&gt; &gt; &gt;</span></button>
+      </div></div>
+    </section>
+    <section class="screen" data-screen="hunts" data-title="Exploration mission list" data-title-zh="探索任务列表" data-note-en="Five hunts, each tied to a physical task card hidden in the bar. The first is marked for newcomers; the fifth opens once the other four are found." data-note-zh="五个寻宝任务，各对应一张藏在店内的实体任务卡。第一个标注为新手推荐；集齐前四个后，第五个才会开启。">
+      <div class="bar"><button data-back aria-label="Back"><svg viewBox="0 0 24 24"><use href="#back"/></svg></button>Hidden Mission</div>
+      <div class="scroll"><div class="pad"><h2 style="font-size:24px">Exploration Mission List</h2><p class="sub">Your exploration will be more than just a hunt for items—it will be a continuation of this bar’s history.</p><div id="hunts" style="margin-top:10px"></div></div></div>
+    </section>
+    <section class="screen" data-screen="clue" data-title="Clue guidance" data-title-zh="线索指引" data-note-en="The app only gives the clue. The card itself is physical: a staff member, the “NPC”, tears off its side strip when you bring it back. The button below stands in for finding it." data-note-zh="应用只提供线索，任务卡本身是实体的：当你把它带回来，扮演「NPC」的店员会撕下侧边的兑奖条。下方按钮用来代替「找到卡片」这一步。">
+      <div class="bar"><button data-back aria-label="Back"><svg viewBox="0 0 24 24"><use href="#back"/></svg></button>Hidden Mission</div>
+      <div class="scroll"><div class="pad"><h2 style="font-size:23px;line-height:1.1" id="clue-title"></h2><p class="sub">Hidden in the tavern’s corner lies a delightful little story—explore carefully to discover it.</p>
+        <div class="clue" id="clue-box"><p id="clue-text"></p><div class="rule"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.500 8.500-2 5-5 2 2-5z"/></svg></div><em id="clue-hint"></em></div>
+        <button class="pill y" style="margin-top:14px;font-size:22px" data-act="found">I found the card</button>
+      </div></div>
+    </section>
+    <section class="screen" data-screen="reward" data-title="Task card found" data-title-zh="找到任务卡" data-note-en="The task card as designed for print: story on the front, a peel-off reward strip at the bottom that the NPC tears off to redeem." data-note-zh="这是为印刷设计的任务卡：正面是故事，底部是可撕下的兑奖条，由 NPC 撕下兑换奖励。">
+      <div class="bar"><button data-go="hunts" data-replace aria-label="Back"><svg viewBox="0 0 24 24"><use href="#back"/></svg></button>Hidden Mission</div>
+      <div class="scroll"><div class="pad" style="text-align:center"><h2 style="font-size:26px;color:var(--yellow)">Achievement unlocked</h2><p class="sub" style="margin-bottom:16px">Show this card to an NPC to redeem your reward.</p>
+        <img class="card-won" id="reward-card" alt="">
+        <button class="pill" style="margin-top:22px;font-size:21px" data-act="see-ach">View achievement</button>
+      </div></div>
+    </section>
+
+    <!-- Achievements -->
+    <section class="screen" data-screen="ach" data-title="Achievements" data-title-zh="成就" data-note-en="Achievements turn one evening into a reason to come back. Everything you did in this prototype is reflected here; locked ones link to the quest that opens them." data-note-zh="成就让一晚的体验变成再来一次的理由。你在这个原型里做过的事都会反映在这里；未解锁的成就会链接到对应的任务。">
+      <div class="bar"><button data-go="home" data-root aria-label="Back"><svg viewBox="0 0 24 24"><use href="#back"/></svg></button>Achievement</div>
+      <div class="scroll"><div class="pad" style="padding-top:10px"><div class="q" style="font-size:21px;margin-top:0">Already obtained</div><div class="achs" id="ach-got"></div><div class="q" style="font-size:21px;margin-top:22px">To be explored</div><div class="achs" id="ach-todo"></div></div></div>
+      <nav class="tabs" data-tab="ach"></nav>
+    </section>
+    <section class="screen" data-screen="achd" data-title="Achievement detail" data-title-zh="成就详情" data-note-en="An unlocked badge keeps its story and reward. A locked one shows only a teaser and a “Go complete” shortcut back into the hunt." data-note-zh="已解锁的徽章保留它的故事和奖励；未解锁的只显示一段引子，以及回到任务的「去完成」入口。">
+      <div class="bar"><button data-back aria-label="Back"><svg viewBox="0 0 24 24"><use href="#back"/></svg></button>Achievement</div>
+      <div class="scroll"><div class="pad" style="padding:14px 18px 26px" id="achd-body"></div></div>
+    </section>
+
+    <!-- Account -->
+    <section class="screen acct" data-screen="account" data-title="Personal homepage" data-title-zh="个人主页" data-note-en="Preferences set during registration can be changed here at any time, including the social battery. “Emergency Call” quietly alerts staff." data-note-zh="注册时的偏好可以随时在这里修改，包括社交电量。「紧急呼叫」会悄悄通知店员。">
+      <div class="bar" style="border:0"><svg viewBox="0 0 24 24"><path d="M3 5h18v2.500H3zm0 5.800h18v2.500H3zm0 5.700h18V19H3z"/></svg><span style="flex:1;font-family:Inter;font-size:16px">Personal Homepage</span><svg viewBox="0 0 24 24"><path d="M12 8.500a3.500 3.500 0 1 0 0 7 3.500 3.500 0 0 0 0-7zm9 5V10.500l-2.300-.5a7 7 0 0 0-.7-1.700l1.300-2-2.100-2.100-2 1.300a7 7 0 0 0-1.700-.7L13.500 2.500h-3l-.5 2.300a7 7 0 0 0-1.700.7l-2-1.300-2.100 2.100 1.300 2a7 7 0 0 0-.7 1.700l-2.300.5v3l2.300.5c.2.600.4 1.200.7 1.700l-1.300 2 2.100 2.100 2-1.300c.5.300 1.100.5 1.700.7l.5 2.300h3l.5-2.300a7 7 0 0 0 1.700-.7l2 1.300 2.100-2.100-1.300-2c.3-.5.5-1.100.7-1.700z"/></svg></div>
+      <div class="scroll"><div class="pad" style="padding-top:8px">
+        <div style="display:flex;gap:16px;align-items:center"><span class="ava" style="width:86px;height:86px"><svg viewBox="0 0 42 42"><use href="#ava"/></svg></span><div class="fields"><span class="c-teal">Name<b>Albedo</b></span><span class="c-lime">Gender<b id="f-gender">female</b></span><span class="c-blue">Social battery<b id="f-battery">Moderate</b></span></div></div>
+        <div class="banner">i-People Exclusive Bar<small>More Surprise Events</small></div>
+        <div class="grid g3"><button class="tile c-yellow" data-act="history"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>History Blend</button><button class="tile c-blue" data-act="soon"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 2v4m6-4v4M8 11h8m-8 4h8"/></svg>My Order</button><button class="tile c-lpink" data-act="sos"><svg viewBox="0 0 24 24"><path d="M6 3c-2 3-1 8 3 12s9 5 12 3l-3-4-3 1c-2-1-4-3-5-5l1-3z"/></svg>Emergency Call</button></div>
+        <div class="grid g2" style="margin-top:6px"><button class="tile c-lime" data-act="soon">Story Submission</button><button class="tile c-yellow" data-act="soon">Discount Coupon</button><button class="tile c-teal" data-act="soon">Game Log</button><button class="tile c-cyan" data-act="soon">Suggestions &amp; Recommendations</button></div>
+      </div></div>
+      <nav class="tabs" data-tab="account"></nav>
+    </section>
+
+    <div class="ptoast" role="status"></div><div class="homebar"></div>
+    <svg width="0" height="0" style="position:absolute"><defs>
+      <symbol id="back" viewBox="0 0 24 24"><path d="M10 4 2 12l8 8v-5c6 0 9 1.500 12 5-1-7-5-11-12-11z"/></symbol>
+      <symbol id="lock" viewBox="0 0 24 24"><path d="M4 10h16v11H4zm3 0V7a5 5 0 0 1 10 0v3h-2.500V7a2.500 2.500 0 0 0-5 0v3z"/></symbol>
+      <symbol id="unlock" viewBox="0 0 24 24"><path d="M4 10h16v11H4zm3 0V6a5 5 0 0 1 9.800-1.500l-2.400.8A2.500 2.500 0 0 0 9.500 6v4z"/></symbol>
+      <symbol id="ava" viewBox="0 0 42 42"><rect width="42" height="42" fill="#f1dbe9"/><circle cx="21" cy="8" r="6" fill="#1d1a2b"/><path d="M11 22c0-9 4-13 10-13s10 4 10 13c0 3-1 5-2 6H13c-1-1-2-3-2-6z" fill="#1d1a2b"/><ellipse cx="21" cy="21" rx="6.500" ry="7.500" fill="#fbe3d6"/><path d="M9 42c0-8 5-12 12-12s12 4 12 12z" fill="#9c8cf0"/><path d="M18 22.500q3 2 6 0" stroke="#d2607a" fill="none" stroke-linecap="round"/></symbol>
+      <symbol id="ava2" viewBox="0 0 42 42"><rect width="42" height="42" fill="#f6d5cc"/><path d="M13 16c0-6 4-9 9-9 4 0 7 2 7 6 0 1-.5 2-1 3-3-3-8-3-12 0-1 0-2 .5-3 0z" fill="#17141f"/><ellipse cx="21" cy="19" rx="6" ry="7" fill="#f7c9b4"/><path d="M8 42c0-8 5-13 13-13s13 5 13 13z" fill="#a8806a"/><path d="M18.500 21.500q2.500 1.800 5 0" stroke="#b5503f" fill="none" stroke-linecap="round"/></symbol>
+    </defs></svg>
+  </div></div>
+
+  <aside class="panel">
+    <h2 data-en="YOU ARE LOOKING AT" data-zh="当前页面">YOU ARE LOOKING AT</h2>
+    <div class="now" aria-live="polite"><small>i² BAR · SCREEN</small><h3 id="now-title"></h3><p id="now-note"></p></div>
+    <div class="controls"><button id="restart" data-en="↺ Restart" data-zh="↺ 重新开始">↺ Restart</button><button id="hints" aria-pressed="false" data-en="Show tappable areas" data-zh="显示可点击区域">Show tappable areas</button></div>
+    <p class="hint-note" data-en="Tap anywhere on the phone. If nothing happens, the tappable areas flash blue." data-zh="在手机上任意点击。如果没有反应，可点击区域会闪烁蓝色提示。">Tap anywhere on the phone. If nothing happens, the tappable areas flash blue.</p>
+  </aside>
+</section>
+
+<details class="case" id="case-study">
+  <summary><span data-en="Case study: research, service blueprint and boards" data-zh="设计案例：研究、服务蓝图与图版">Case study: research, service blueprint and boards</span><small data-en="8 boards · open to read" data-zh="8 张图版 · 点击展开">8 boards · open to read</small></summary>
+  <div class="case-body">
+    <div class="case-copy">
+      <div><h3 data-en="The question" data-zh="设计问题">The question</h3><p data-en="How might a social experience help people participate at a pace that feels comfortable? Field observations and a survey with 68 valid responses informed the concept." data-zh="如何让人们以舒适的节奏参与社交？通过实地观察及 68 份有效问卷，识别参与障碍。">How might a social experience help people participate at a pace that feels comfortable? Field observations and a survey with 68 valid responses informed the concept.</p></div>
+      <div><h3 data-en="From research to a service" data-zh="从研究到服务">From research to a service</h3><p data-en="A service blueprint, mobile user flows, a UI kit, and physical task cards connect the experience across screens and spaces." data-zh="以服务蓝图、移动端用户流程、UI 组件和实体任务卡，将屏幕与线下空间中的体验串联。">A service blueprint, mobile user flows, a UI kit, and physical task cards connect the experience across screens and spaces.</p></div>
+      <div><h3 data-en="Testing the moments that matter" data-zh="验证关键环节">Testing the moments that matter</h3><p data-en="Paper prototypes were tested with 3 participants to evaluate invitation timing, recommendations, and task-completion clarity. This project is an independent design concept." data-zh="与 3 位参与者进行纸面原型测试，评估邀请时机、推荐内容和任务完成的清晰度。本项目为独立设计概念。">Paper prototypes were tested with 3 participants to evaluate invitation timing, recommendations, and task-completion clarity. This project is an independent design concept.</p></div>
+    </div>
+    <p class="note" data-en="Click a board to open the full-resolution original." data-zh="点击图版可打开原始分辨率大图。">Click a board to open the full-resolution original.</p>
+    <div class="boards" data-pages="3,4,5,6,7,8,9,10" data-name="Inn-trovert"></div>
+  </div>
+</details>
+<div class="more"><a href="index.html#work" data-en="← All work" data-zh="← 全部作品">← All work</a><a href="what-are-you-doing.html" data-en="Next: What are you doing? →" data-zh="下一个：What are you doing? →">Next: What are you doing? →</a></div>
+</main>
+<footer class="site"><span>© 2026 XIWEN YAN / ECHO</span><span data-en="Screens rebuilt in HTML from the original Figma boards." data-zh="界面依据原始 Figma 图版以 HTML 重建。">Screens rebuilt in HTML from the original Figma boards.</span><a href="index.html" data-en="Back to portfolio ↑" data-zh="返回作品集 ↑">Back to portfolio ↑</a></footer>
+
+<script src="proto.js"></script>
+<script>
+// i² bar prototype behaviour. Everything the guest does is kept in `state` and shows up again later (blend, battery, achievements).
+const {$,$$,go,toast,done}=Proto;
+const fresh=()=>({battery:1,registered:false,drawn:0,invited:false,accepted:false,played:false,blend:null,found:new Set(),hunt:1,lastNew:null});
+let state=fresh();
+const LEVELS=['Low battery','Moderate','High energy'];
+
+// Bottom tab bar, shared by the three root screens
+$$('.tabs').forEach(n=>{const cur=n.dataset.tab,tab=(id,label,icon)=>`<button ${id==='msg'?'data-act="soon"':`data-go="${id}" data-root`} class="${id===cur?'cur':''}"><i><svg viewBox="0 0 24 24">${icon}</svg></i>${label}</button>`;
+  n.innerHTML=tab('home','Home','<path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/>')+tab('ach','Achievement','<path d="M8 4h8v5a4 4 0 0 1-8 0zm0 2H5c0 3 1 4 3 4m8-4h3c0 3-1 4-3 4m-4 3v4m-3 3h6"/>')+tab('msg','Messages','<circle cx="12" cy="12" r="8.500"/><path d="M9 10.500h6M9 13.500h4"/>')+tab('account','Account','<circle cx="12" cy="8.500" r="3.500"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6z"/>')});
+
+// Single- and multi-select tile groups
+$('.phone').addEventListener('click',e=>{
+  const tile=e.target.closest('.tile');if(!tile)return;
+  const single=tile.closest('[role=radiogroup]'),multi=tile.closest('[data-multi]');
+  if(single)$$('.tile',single).forEach(x=>x.setAttribute('aria-checked',x===tile));
+  else if(multi){const on=tile.getAttribute('aria-checked')==='true',max=+multi.dataset.max||99;
+    tile.setAttribute('aria-checked',!on);tile.dataset.at=Date.now();
+    const picked=$$('.tile[aria-checked=true]',multi);
+    if(picked.length>max)picked.sort((a,b)=>a.dataset.at-b.dataset.at)[0].setAttribute('aria-checked',false);} // swap out the oldest pick
+  if(single?.dataset.key==='gender')$('#f-gender').textContent=tile.textContent.trim();
+});
+const picks=key=>$$(`[data-key="${key}"] .tile[aria-checked=true]`).map(x=>x.dataset.v);
+
+// Social battery
+function setBattery(l){state.battery=l;$('#battery i').style.width=[100,66.6,33.3][l]+'%';$$('#levels span').forEach((s,i)=>s.classList.toggle('on',2-i===l));$('#f-battery').textContent=LEVELS[l]}
+// The bar fills from the left: full = low battery / do not disturb is the rightmost label, as on the boards
+$$('#battery button').forEach(b=>b.addEventListener('click',()=>setBattery(+b.dataset.level)));
+
+// Tables nearby
+const TABLES=[['C04',3,'Truth or Dare','teal'],['C06',3,'Werewolf','blue'],['C07',4,'Touring Gardens','yellow'],['C08',6,'“Don’t Do It”','lime'],['C09',5,'Chicken Game','teal'],['C10',3,'Truth or Dare','blue'],['C11',5,'Digital Bomb','yellow'],['C12',4,'Werewolf','lime']];
+$('#seats').innerHTML=TABLES.map(([no,n,g,c])=>`<div class="seat c-${c}" data-no="${no}">People number : ${n}<br>Game Genre : ${g}<button data-act="apply">Apply to join</button><button data-act="apply">Invite them</button></div>`).join('');
+
+// Truth or Dare deck
+const DECK=[['Truth','Have you ever met someone or experienced something particularly memorable in a bar?'],['Dare','Clink glasses with the person on your left. No words needed.'],['Truth','What would you order if nobody at the table could see it?'],['Dare','Show the table the last photo you took.'],['Truth','What is one small thing that made today better?']];
+function draw(){const d=$('#draw'),[kind,text]=DECK[state.drawn%DECK.length];state.drawn++;state.played=true;
+  d.classList.remove('start','flip');void d.offsetWidth;d.classList.add('flip');
+  setTimeout(()=>d.innerHTML=`<small>Truth or Dare</small><b>${kind}</b><p>${text}</p>`,200);
+  if(state.drawn===1){unlock('game');done('game')}
+  if(state.drawn===2&&!state.invited){state.invited=true;
+    if(state.battery===0)setTimeout(()=>toast('1 invitation held back — you’re on Low battery. Find it later in Messages.',3600),900);
+    else setTimeout(()=>Proto.current==='play'&&$('#invite').classList.add('show'),1300)}}
+
+// Hidden missions and achievements
+const HUNTS={1:{name:'The Old Captain’s Final Voyage',badge:'Legendary Navigator',c:'teal',reward:'“Guiding Elixir” Signature Blend',how:'Locate the compass at the northeast corner of the tavern.',won:'You deciphered the old captain’s final silent bearing, proving that the true treasure lies not in distant lands, but in this very cup of wine before us.',clue:'The founder of the Bar—an old sea captain—brought back a mysterious compass from his final voyage. He claimed it would only point to “true treasure,” but no one knows where it lies hidden.',hint:'He spent his life gazing toward the horizon, yet now he stares at a single treasure. Seeking a direction that no longer turns.'},
+ 2:{name:'The Heart of the Gear',badge:'Mechanical Orator',c:'yellow',reward:'Super Energy Snacks',how:'Find the gear left within the walls.',won:'You heard what the old factory still had to say.',clue:'The second owner, Maggie Wrench, was a mechanical genius. She claimed that buried beneath this old clock factory lay an even older “Earth Engine,” and that the gear she left within the walls served as its resonating “Tuner.”',hint:'This bar was once a century-old watch factory. During the renovation, workers discovered this massive central gear within the walls—it had been the source of all power. We decided to leave it in place as the building’s “heart”.'},
+ 3:{name:'The Secret of one Page',badge:'Truth Seeker',c:'lime',reward:'Exclusive Discount for “Philosopher” Status',how:'Find the page hidden among the ordinary books.',won:'You found the page that history left out.',clue:'A mysterious guest calling himself the “Chronicler” left behind this riddle. He claimed that the world’s history contained missing pages, and that the true history was recorded on a page within those seemingly ordinary books.',hint:'A dimension existing between reality and fiction.'},
+ 4:{name:'The Boss’s Stash',badge:'Alcohol Detective',c:'blue',reward:'The Boss’s Signature Blend',how:'Discover the owner’s hidden favourite.',won:'You earned the owner’s personal trust.',clue:'The current owner doesn’t guard any earth-shattering secrets—he only guards his own palate. He hid his favorite wine to ensure that the guests who truly liked it could discover it at the perfect moment.',hint:'Finding it means you’ve earned the owner’s personal trust.'},
+ 5:{name:'The Philosopher’s Stone',badge:'Arcane Apprentice',c:'teal',reward:'Commemorative Polaroid',how:'Gather the four talismans.',won:'Navigation, machinery, knowledge and pleasure, combined.',clue:'Every guardian throughout history has believed that by combining the four powers of navigation, machinery, knowledge, and pleasure, the ultimate “alchemy of joy” can be achieved.',hint:'Only when the power of all the talismans is gathered can it be truly “activated”.'}};
+const EXTRA={reg:['Complete user registration','blue'],game:['Play a game','lime'],task:['Complete an interactive task','blue']};
+const LOCKED=[['Complete more than 5 games','lime'],['Craft 5 signature cocktails','teal'],['Achieve over 15 victories in the game','blue']];
+const got=new Set();
+function unlock(id){if(got.has(id))return;got.add(id);state.lastNew=id}
+function renderHunts(){const sealed=state.found.size<4;
+  $('#hunts').innerHTML=[1,2,3,4,5].map(n=>{const h=HUNTS[n],lock=n===5&&sealed&&!state.found.has(5);return `<button class="hunt c-${h.c} ${state.found.has(n)?'found':''} ${lock?'sealed':''}" data-act="hunt" data-n="${n}">Tavern Treasure Hunt ${n}:<br>${h.name}${n===1?'<small>Recommended for Newcomers</small>':''}${lock?'<small style="color:#fff">Opens after hunts 1–4</small>':''}</button>`}).join('')}
+function openClue(n){state.hunt=n;const h=HUNTS[n];$('#clue-title').innerHTML=`Tavern Treasure Hunt ${n}<br>${h.name}`;$('#clue-text').textContent=h.clue;$('#clue-hint').textContent=h.hint;$('#clue-box').className='clue c-'+h.c;go('clue')}
+function renderAch(){const cell=(id,label,c,locked)=>`<button class="ach c-${c} ${locked?'locked':''} ${id===state.lastNew?'new':''}" data-act="ach" data-id="${id}">${label}<span>${locked?'Locked':'Unlocked'}<svg viewBox="0 0 24 24"><use href="#${locked?'lock':'unlock'}"/></svg></span></button>`;
+  const hunts=[1,2,3,4,5].map(n=>['h'+n,`Tavern Treasure Hunt ${n}:<br>${HUNTS[n].name}`,HUNTS[n].c]),extra=Object.entries(EXTRA).map(([k,[l,c]])=>[k,l,c]),all=[...hunts,...extra];
+  $('#ach-got').innerHTML=all.filter(a=>got.has(a[0])).map(a=>cell(a[0],a[1],a[2],false)).join('')||'<p class="sub" style="grid-column:1/3">Nothing yet. Play a game or follow a hidden mission.</p>';
+  $('#ach-todo').innerHTML=all.filter(a=>!got.has(a[0])).map(a=>cell(a[0],a[1],a[2],true)).join('')+LOCKED.map(([l,c])=>cell('x',l,c,true)).join('');
+  state.lastNew=null}
+function openAch(id){
+  if(id[0]!=='h'){toast(got.has(id)?'Unlocked tonight.':id==='x'?'A long-term goal: come back another night.':({reg:'Finish registration to unlock.',game:'Draw a card in Start Game to unlock.',task:'Accept a game invitation to unlock.'})[id]);return}
+  const n=+id[1],h=HUNTS[n],has=got.has(id);
+  $('#achd-body').innerHTML=has?`<div class="badge"><img src="assets/proto/inn/art${n}.webp" alt="${h.badge}"><h3>${h.badge}</h3><div class="won"><b>${h.name}</b>${h.won}</div><p class="how">Completion Method: ${h.how}<br><br>Reward : ${h.reward}</p><div class="clues"><small>Clues</small>${h.clue}</div></div>`
+   :`<div class="badge locked"><img src="assets/proto/inn/art${n}.webp" alt=""><h3>${h.badge}</h3><div class="clues"><b>Must be unlocked by completing the “${h.name}” quest.</b>${h.hint}</div></div><button class="pill y" style="margin-top:14px" data-act="hunt" data-n="${n}">Go complete</button>`;
+  go('achd')}
+
+// Signature blend
+function mix(){const f=picks('flavor'),fr=picks('fragrance'),abv=picks('abv')[0],tx=picks('taste')[0];
+  if(!f.length||!fr.length){toast('Pick at least one flavour and one fragrance.');return}
+  state.blend={f,fr,abv,tx};
+  $('#blend-name').textContent=`${fr[0]} ${f[0]} №${5}`;
+  $('#blend-list').innerHTML=`<dt>Flavor</dt><dd>${f.join(' + ')}</dd><dt>Alcohol</dt><dd>${abv}</dd><dt>Fragrance</dt><dd>${fr.join(' + ')}</dd><dt>Texture</dt><dd>${tx}</dd>`;
+  $('#liquid').setAttribute('fill',({Sour:'#0de0b8',Sweet:'#f6a2c5',Bitter:'#c98a2b',Spicy:'#f0541f',Salty:'#00b4df',Savory:'#aaf43f'})[f[0]]);
+  go('blend')}
+
+// Actions
+const ACT={
+  register(){state.registered=true;unlock('reg');done('reg');go('home',{root:true});toast('Welcome, Albedo. Table C05 is yours.')},
+  soon(){toast('Not built out in this prototype.')},
+  mix,
+  order(){done('blend');go('home',{root:true});toast('Sent. Your blend is on its way to table C05.',2800)},
+  history(){toast(state.blend?`Last blend: ${state.blend.f.join(' + ')}, ${state.blend.fr.join(' + ')}, ${state.blend.tx}.`:'No blends yet. Try Impression Beverages.',3200)},
+  sos(){toast('Staff alerted quietly. Someone will come by your table.',3000)},
+  apply(el){el.classList.add('sent');el.textContent='Request sent';toast('Request sent. They can accept or pass without you knowing who declined.',3200)},
+  draw,
+  pass(){if($('#draw').classList.contains('start'))return draw();toast('Passed. No penalty, next card.',1400);draw()},
+  accept(){$('#invite').classList.remove('show');state.accepted=true;unlock('task');toast('Accepted. Anthony’s table is C07, they’ll wave.',3200)},
+  refuse(){$('#invite').classList.remove('show');toast('Declined quietly. Anthony only sees “maybe later”.',3000)},
+  hunt(el){const n=+el.dataset.n;if(n===5&&state.found.size<4&&!state.found.has(5)){toast('Find the first four talismans to open this hunt.');return}openClue(n)},
+  found(){const n=state.hunt;state.found.add(n);unlock('h'+n);done('hunt');$('#reward-card').src=`assets/proto/inn/card${n}.webp`;$('#reward-card').alt=`Task card: ${HUNTS[n].name}`;go('reward',{replace:true})},
+  'see-ach'(){openAch('h'+state.hunt)},
+  ach(el){openAch(el.dataset.id)}
+};
+$('.phone').addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(el&&ACT[el.dataset.act])ACT[el.dataset.act](el)});
+
+Proto.on(id=>{
+  if(id==='hunts')renderHunts();
+  if(id==='ach'){renderAch();done('ach')}
+  if(id==='play'){$('#invite').classList.remove('show')}
+});
+Proto.reset=()=>{state=fresh();got.clear();setBattery(1);$('#draw').className='draw start';$('#draw').innerHTML='<small>Truth or Dare</small><b>Click to<br>start<br>drawing</b>';$$('.tasks .done').forEach(b=>b.classList.remove('done'));$$('.seat .sent').forEach(b=>b.classList.remove('sent'))};
+setBattery(1);Proto.start();
+</script>
+</body></html>
