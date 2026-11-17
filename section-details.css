@@ -1,0 +1,15 @@
+.trace-senses-v4 .sensor-flow h3{color:#f0f3e9}
+.trace-senses-v4 .sensor-result h3{color:#273219}
+.physical-frames{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;align-items:start}
+.physical-frames .folio-device{max-width:240px}
+.physical-evidence{align-items:stretch}
+.physical-evidence>figure{height:auto;min-height:580px}
+.physical-evidence>figure>img{object-position:50% 50%}
+.city-making-v4>figure>img{object-position:50% 40%}
+.city-cover-art>.city-cover-photo>img{object-position:50% 38%}
+.inn-close-photo{grid-template-columns:1fr;gap:22px}
+.inn-close-photo>.folio-copy{max-width:54em;font-size:16px}
+.inn-close-photo figcaption{font:12px/1.6 var(--folio-font);color:#b9c6b3;margin-top:12px}
+@media(max-width:760px){.physical-evidence>figure{height:350px;min-height:0}.physical-frames{gap:20px}.physical-frames .folio-device{max-width:none}.inn-close-photo{gap:18px}}
+
+.workshop-scene-caption{position:absolute;left:22px;bottom:18px;padding:7px 12px;background:#193e37de;color:#fff;font:11px/1.5 var(--folio-font);border-radius:20px;z-index:1}
