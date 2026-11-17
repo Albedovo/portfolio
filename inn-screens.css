@@ -1,0 +1,155 @@
+/* Original Inn-trovert interface styles. Static, inert excerpts for the showcase. */
+.phone{position:absolute;left:0;top:0;width:390px;height:844px;margin:12px;transform:scale(var(--s));transform-origin:-12px -12px;border-radius:52px;background:#000;box-shadow:0 0 0 10px #17151f,0 0 0 12px #4a4658,10px 12px 0 12px var(--ink);overflow:hidden;isolation:isolate;user-select:none;-webkit-user-select:none}
+.phone .statusbar{position:absolute;left:0;right:0;top:0;height:52px;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:8px 30px 0 36px;font:600 16px/1 'Inter','DM Sans',sans-serif;color:var(--status,#fff);pointer-events:none}
+.phone .statusbar::after{content:'';position:absolute;left:50%;top:11px;width:112px;height:32px;margin-left:-56px;border-radius:20px;background:#000}
+.phone .statusbar svg{height:13px;width:auto;fill:currentColor}
+.phone .homebar{position:absolute;left:50%;bottom:8px;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:var(--status,#fff);opacity:.9;z-index:30;pointer-events:none}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;padding-top:52px;overflow:hidden}
+.screen.on{display:flex}
+.screen.fwd{animation:in-r .28s cubic-bezier(.2,.8,.2,1)}.screen.bwd{animation:in-l .28s cubic-bezier(.2,.8,.2,1)}.screen.fade{animation:in-f .22s ease}
+@keyframes in-r{from{transform:translateX(28%);opacity:0}}@keyframes in-l{from{transform:translateX(-28%);opacity:0}}@keyframes in-f{from{opacity:0}}
+.scroll{flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;overscroll-behavior:contain}.scroll::-webkit-scrollbar{display:none}
+.phone button{font-family:inherit}
+.phone [data-go],.phone [data-back],.phone [data-act]{cursor:pointer}
+
+/* i² bar — screens rebuilt from the Inn-trovert UI kit: Jersey 20 + Inter, five loud colours on near-black */
+.inn{--teal:#0de0b8;--yellow:#ffeb00;--lime:#aaf43f;--pink:#f06aa9;--lpink:#f6a2c5;--blue:#00b4df;--cyan:#6fe6ee;--navy:#15129d;--bg:#050908;background:var(--bg);color:#fff;font-family:'Inter',sans-serif}
+.inn .screen{background:var(--bg)}
+.inn .j{font-family:'Jersey 20','Jersey 15',sans-serif;font-weight:400;letter-spacing:.3px}
+.inn .bar{display:flex;align-items:center;gap:12px;height:46px;padding:0 20px;border-bottom:1px solid #2a302e;font-family:'Jersey 20',sans-serif;font-size:21px;flex:none}
+.inn .bar button{display:grid;place-items:center;width:30px;height:30px}
+.inn .bar svg{width:24px;height:24px;fill:#fff}
+.inn .pad{padding:18px 22px 26px}
+.inn h2{font-family:'Jersey 20',sans-serif;font-weight:400;font-size:33px;line-height:1.02;letter-spacing:.3px}
+.inn .q{font-family:'Jersey 20',sans-serif;font-size:19px;margin:16px 0 8px;display:flex;align-items:baseline;gap:8px}
+.inn .q small{font-family:'Inter';font-size:10px;color:#b9c2be}
+.inn .who{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:600;line-height:1.35}
+.inn .ava{display:block;width:42px;height:42px;border-radius:50%;background:#f1dbe9;flex:none;overflow:hidden}
+.inn .ava svg{width:100%;height:100%;display:block}
+.inn hr{border:0;border-top:1px solid #2a302e;margin:16px -22px 0}
+.inn .grid{display:grid;gap:6px}.inn .g2{grid-template-columns:1fr 1fr}.inn .g3{grid-template-columns:repeat(3,1fr)}
+.inn .tile{position:relative;border-radius:6px;padding:10px;min-height:76px;color:var(--navy);font-family:'Jersey 20',sans-serif;font-size:17px;line-height:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;transition:transform .12s,filter .12s,box-shadow .12s}
+.inn .tile:active{transform:scale(.96)}
+.inn .tile small{font-family:'Inter';font-size:9.5px;line-height:1.3;font-weight:500;opacity:.8}
+.inn .tile svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.inn .tile[aria-checked=true]{box-shadow:inset 0 0 0 3px #fff,0 0 0 2px #fff;z-index:1}
+.inn .tile[aria-checked=true]::after{content:'✓';position:absolute;right:6px;top:6px;width:18px;height:18px;border-radius:50%;background:#fff;color:#050908;font:700 11px/18px Inter,sans-serif;text-align:center;text-shadow:none}
+.c-teal{background:var(--teal)}.c-yellow{background:var(--yellow)}.c-lime{background:var(--lime)}.c-pink{background:var(--pink)}.c-lpink{background:var(--lpink)}.c-blue{background:var(--blue)}.c-cyan{background:var(--cyan)}.c-cream{background:#fff6a8}.c-purple{background:#a85be8}
+.inn .round{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:24px;font-weight:700}
+.inn .round svg{width:22px;height:22px;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.inn .nav2{display:flex;justify-content:center;gap:18px;padding:14px 0 30px;flex:none}
+.inn .pill{display:block;width:100%;padding:13px;border-radius:30px;background:var(--lime);color:#0a8f79;font-family:'Jersey 20',sans-serif;font-size:26px;text-align:center}
+.inn .pill.y{background:var(--yellow);color:#f0791f}
+.inn .fine{font-size:9.5px;color:#9aa5a0;text-align:center;margin-top:10px}
+/* personality tiles */
+.inn .persona{height:118px;align-items:flex-start;justify-content:flex-end;font-size:19px;overflow:hidden}
+.inn .persona.i{background:linear-gradient(105deg,var(--blue) 0 34%,#1466d8 34% 52%,var(--blue) 52%);color:#ff6a8a}
+.inn .persona.e{background:linear-gradient(180deg,var(--pink) 0 28%,#7b3fb8 28% 46%,var(--pink) 46% 62%,#7b3fb8 62% 80%,var(--pink) 80%);color:var(--yellow)}
+/* social battery */
+.inn .battery{position:relative;height:44px;border-radius:6px;background:#1f7f7d;overflow:hidden;display:grid;grid-template-columns:repeat(3,1fr)}
+.inn .battery i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--teal),#19f0cf);transition:width .25s cubic-bezier(.2,.8,.2,1)}
+.inn .battery button{position:relative;z-index:1;height:100%}
+.inn .levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:9.5px;font-weight:600;line-height:1.3;margin-top:8px}
+.inn .levels span{opacity:.5;transition:opacity .2s}.inn .levels span.on{opacity:1;color:var(--lime)}
+/* home */
+.inn .welcome{font-family:'Jersey 20',sans-serif;font-size:44px;line-height:1.12;padding:26px 30px 20px}
+.inn .welcome sup{font-size:.55em}
+.inn .big{height:226px;font-size:25px;align-items:flex-start;justify-content:center;text-align:left;padding:0 34px;line-height:1.05}
+.inn .mid{height:142px;align-items:flex-start;justify-content:flex-start;text-align:left;padding:14px 10px;font-size:19px}
+.inn .mid small{margin-top:14px;font-size:10px}
+.inn .tabs{flex:none;display:grid;grid-template-columns:repeat(4,1fr);background:#5b625f;padding:8px 6px 26px;border-radius:14px 14px 0 0}
+.inn .tabs button{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9.5px;font-weight:600;color:#fff}
+.inn .tabs i{width:40px;height:40px;border-radius:50%;background:#e9eceb;display:grid;place-items:center;transition:background .2s}
+.inn .tabs svg{width:22px;height:22px;fill:none;stroke:#2c3331;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.inn .tabs .cur i{background:var(--lime)}.inn .tabs .cur svg{stroke:#0a8f79}
+/* blend builder */
+.inn .abv{height:150px;overflow:hidden;align-items:stretch;justify-content:space-between;padding:8px 10px;color:#fff;text-shadow:2px 2px 0 rgba(0,0,0,.18)}
+.inn .abv::before{content:'';position:absolute;left:-18px;top:-10px;width:110px;height:110px;border-radius:50%;background:var(--yellow);opacity:.95}
+.inn .abv b{position:relative;font-weight:400;font-size:46px;line-height:.9;text-align:left}.inn .abv b+b{text-align:right}
+.inn .abv span{position:relative;font-size:16px;color:var(--navy);text-shadow:none;text-align:right}
+.inn .frag{height:100px;font-size:16px}.inn .taste{height:150px;font-size:21px}
+.inn .progress{display:flex;gap:5px;margin:10px 0 2px}.inn .progress i{flex:1;height:4px;border-radius:2px;background:#2a302e}.inn .progress i.on{background:var(--lime)}
+.inn .recipe{border-radius:10px;background:var(--teal);color:var(--navy);padding:18px;margin-top:14px}
+.inn .recipe h3{font-family:'Jersey 20',sans-serif;font-weight:400;font-size:30px;line-height:1}
+.inn .recipe dl{margin:14px 0 0;display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:13px}
+.inn .recipe dt{font-family:'Jersey 20',sans-serif;font-size:16px;color:#0b6b5b}.inn .recipe dd{margin:0;font-weight:600}
+.inn .glass{height:120px;display:grid;place-items:center;margin-top:16px}
+.inn .glass svg{height:120px}
+/* game */
+.inn .table{font-family:'Jersey 20',sans-serif;font-size:50px;line-height:1;color:#7d8683;display:flex;align-items:flex-end;justify-content:space-between}
+.inn .table small{font-family:'Inter';font-size:10px;color:#fff;padding-bottom:6px}
+.inn .seat{border-radius:6px;padding:9px 8px;color:var(--navy);font-size:10px;font-weight:600;text-align:center;line-height:1.5;position:relative;overflow:hidden}
+.inn .seat::before{content:attr(data-no);position:absolute;left:4px;top:-8px;font-family:'Jersey 20',sans-serif;font-size:38px;opacity:.22}
+.inn .seat button{display:block;width:74%;margin:4px auto 0;padding:3px;border-radius:3px;background:#fff;font-size:9.5px;font-weight:600;color:#333}
+.inn .seat button+button{background:#5b625f;color:#fff}
+.inn .seat button.sent{background:var(--navy);color:#fff}
+.inn .game{height:112px;font-size:14px}
+.inn .game i{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.35);display:grid;place-items:center;font-style:normal;font-size:22px;border:2px solid currentColor}
+.inn .deck{position:relative;width:250px;height:340px;margin:34px auto 0}
+.inn .deck::before,.inn .deck::after{content:'';position:absolute;inset:0;border-radius:8px}
+.inn .deck::before{background:var(--yellow);transform:rotate(-5deg) translate(6px,8px)}.inn .deck::after{background:var(--lime);transform:rotate(4deg) translate(4px,-2px)}
+.inn .draw{position:absolute;inset:0;z-index:1;border-radius:8px;background:var(--cyan);color:var(--navy);font-family:'Jersey 20',sans-serif;display:flex;flex-direction:column;align-items:center;padding:22px 24px;text-align:center;transform:rotate(-2deg)}
+.inn .draw.flip{animation:flip .45s cubic-bezier(.3,.7,.3,1)}
+@keyframes flip{0%{transform:rotate(-2deg) rotateY(0)}50%{transform:rotate(-2deg) rotateY(90deg) scale(1.04)}100%{transform:rotate(-2deg) rotateY(0)}}
+.inn .draw small{font-family:'Jersey 20';font-size:17px}
+.inn .draw b{font-weight:400;font-size:38px;line-height:1;margin:auto 0 10px}
+.inn .draw p{font-family:'Inter';font-weight:600;font-size:14px;line-height:1.45;margin-bottom:auto}
+.inn .draw.start b{margin:auto}
+.inn .count{text-align:center;font-family:'Jersey 20',sans-serif;font-size:16px;margin-top:30px}
+.inn .passrow{display:flex;justify-content:center;gap:10px;margin-top:14px}
+.inn .passrow button{font-size:11px;font-weight:600;padding:8px 14px;border-radius:20px;border:1px solid #4a524f;color:#cfd6d3}
+.inn .me{position:absolute;left:28px;bottom:44px}
+.inn .invite{position:absolute;inset:98px 0 0;z-index:5;display:grid;place-items:start center;padding-top:34px;background:rgba(5,9,8,.82);opacity:0;pointer-events:none;transition:opacity .25s}
+.inn .invite.show{opacity:1;pointer-events:auto}
+.inn .invite>div{width:262px;border-radius:14px;background:#e9ecec;color:#333;padding:18px 16px;text-align:center;box-shadow:-14px 10px 0 -4px #6a8f1e,14px -6px 0 -4px #2d7f86;transform:translateY(30px) scale(.9);transition:transform .35s cubic-bezier(.2,1.3,.4,1)}
+.inn .invite.show>div{transform:none}
+.inn .invite h4{margin:0 0 12px;font-family:'Jersey 20',sans-serif;font-weight:400;font-size:18px;color:#f08a1f}
+.inn .invite .ava{width:96px;height:96px;margin:0 auto 6px;background:#f6d5cc}
+.inn .invite .uid{font-size:10px;font-weight:600;line-height:1.5}
+.inn .invite .ask{margin:12px 0;padding:12px;border-radius:8px;background:#f8e8cf;font-size:11px;line-height:1.5}
+.inn .invite .ask b{display:block;font-family:'Jersey 20',sans-serif;font-weight:400;font-size:16px;color:#f08a1f;margin-bottom:4px}
+.inn .invite .yn{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.inn .invite .yn button{padding:14px;border-radius:5px;background:var(--cyan);color:#f06aa9;font-family:'Jersey 20',sans-serif;font-size:15px}
+.inn .invite .yn button+button{background:var(--pink);color:var(--cyan)}
+/* missions */
+.inn .brief{border-radius:4px;background:var(--lime);color:var(--navy);padding:22px 18px;font-size:11.5px;font-weight:600;line-height:1.75;margin-top:14px}
+.inn .brief p+p{margin-top:14px}.inn .brief .ask{font-family:'Jersey 20',sans-serif;font-size:17px;line-height:1.2;margin-top:26px}
+.inn .embark{display:flex;justify-content:space-between;align-items:center;width:100%;margin-top:14px;padding:16px 18px;border-radius:4px;background:var(--yellow);color:#f0541f;font-family:'Jersey 20',sans-serif;font-size:19px;line-height:1.05;text-align:left}
+.inn .hunt{display:block;width:100%;text-align:left;border-radius:4px;padding:18px 20px;margin-top:8px;font-family:'Jersey 20',sans-serif;font-size:17px;line-height:1.15;color:var(--navy);position:relative}
+.inn .hunt:first-child{padding:34px 20px}
+.inn .hunt small{display:block;font-size:13px;color:#f06aa9;margin-top:8px}
+.inn .hunt.found::after{content:'FOUND';position:absolute;right:12px;top:10px;font-size:12px;padding:2px 8px;border-radius:3px;background:var(--navy);color:#fff}
+.inn .hunt.sealed{filter:saturate(.3) brightness(.55)}
+.inn .clue{border-radius:4px;background:var(--teal);color:var(--navy);padding:44px 26px 34px;text-align:center;margin-top:14px}
+.inn .clue p{font-family:'Jersey 20',sans-serif;font-size:19px;line-height:1.25}
+.inn .clue .rule{display:flex;align-items:center;gap:10px;margin:30px 0;color:#0b8f7a}
+.inn .clue .rule::before,.inn .clue .rule::after{content:'';flex:1;border-top:1.5px dashed currentColor}
+.inn .clue .rule svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6}
+.inn .clue em{display:block;font-style:normal;font-size:11.5px;font-weight:600;line-height:1.6;color:#08695a}
+.inn .sub{font-size:10.5px;line-height:1.5;font-weight:500;margin-top:8px;color:#d7deda}
+.inn .card-won{display:block;width:230px;margin:6px auto 0;border-radius:6px;box-shadow:0 0 0 3px #fff,0 14px 40px rgba(13,224,184,.45);animation:won .6s cubic-bezier(.2,1.4,.4,1)}
+@keyframes won{from{transform:translateY(60px) rotate(-8deg) scale(.7);opacity:0}}
+/* achievements */
+.inn .achs{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.inn .ach{position:relative;min-height:66px;border-radius:4px;padding:8px 9px 22px;text-align:left;font-family:'Jersey 20',sans-serif;font-size:13px;line-height:1.1;color:var(--navy)}
+.inn .ach span{position:absolute;right:8px;bottom:6px;display:flex;align-items:center;gap:5px;font-family:'Inter';font-size:9px;font-weight:700}
+.inn .ach svg{width:16px;height:16px;fill:currentColor}
+.inn .ach.locked{filter:saturate(.35) brightness(.45)}
+.inn .ach.new{animation:pop .5s cubic-bezier(.2,1.5,.4,1)}@keyframes pop{from{transform:scale(.8)}}
+.inn .badge{border-radius:4px;background:var(--teal);color:var(--navy);padding:14px;text-align:center}
+.inn .badge img{display:block;width:100%;border-radius:3px}
+.inn .badge h3{font-family:'Jersey 20',sans-serif;font-weight:400;font-size:27px;letter-spacing:1px;text-transform:uppercase;margin:10px 0}
+.inn .badge .won{border-radius:4px;background:#0d8f79;color:#fff;padding:12px;font-size:10.5px;font-weight:600;line-height:1.5}
+.inn .badge .won b{display:block;font-family:'Jersey 20',sans-serif;font-weight:400;font-size:19px;margin-bottom:6px}
+.inn .badge .how{text-align:left;font-family:'Jersey 20',sans-serif;font-size:15px;line-height:1.25;margin:12px 0}
+.inn .badge .clues{border-radius:4px;background:var(--lime);padding:14px;text-align:left;font-family:'Jersey 20',sans-serif;font-size:15px;line-height:1.3}
+.inn .badge .clues small{display:block;font-family:'Inter';font-size:10.5px;font-weight:600;margin-bottom:10px}
+.inn .badge.locked{background:#5f5b12;color:#e9e7c4}.inn .badge.locked img{filter:grayscale(1) brightness(.35) contrast(1.4)}
+.inn .badge.locked .clues{background:#7f8f24;color:#f3f6d8;text-align:center;font-family:'Inter';font-size:11.5px;font-weight:600;line-height:1.6}
+.inn .badge.locked .clues b{display:block;margin-bottom:12px}
+/* account */
+.inn .fields{flex:1;display:grid;gap:5px}
+.inn .fields span{display:flex;justify-content:space-between;padding:5px 10px;border-radius:4px;font-size:10px;font-weight:600;color:var(--navy)}
+.inn .banner{margin:16px -22px;padding:22px;height:112px;background:radial-gradient(120% 140% at 80% 40%,#b06ad9 0,#3a7f8f 40%,#12201d 78%);font-family:'Jersey 20',sans-serif;font-size:19px;color:var(--teal)}
+.inn .banner small{display:block;font-size:13px;color:#fff}
+.inn .acct .tile{min-height:84px;font-size:15px}

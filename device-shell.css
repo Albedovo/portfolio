@@ -1,0 +1,25 @@
+/* iPhone 17 Pro reference: Apple display 1206 × 2622 (402 × 874 at 3x).
+   16.25 units of surround yields body ratio 434.5 / 906.5 ≈ 71.9 / 150.
+   UI is laid out at the screen size and uniformly scaled in both axes. */
+.folio-device{padding:12px;background:none;border:0;overflow:visible;border-radius:42px}
+.folio-device .screen-render,.folio-device .screen-shot,
+.screen-dialog .detail-render,.screen-dialog .detail-shot{display:block;width:100%;height:auto;aspect-ratio:402/874;position:relative;overflow:visible}
+.folio-device .phone,.screen-dialog .phone{width:402px;height:874px;border-radius:52px;box-shadow:0 0 0 10px #151719,0 0 0 13px #626568,0 0 0 16.25px #303438,0 14px 30px 17px #00000012;transform-origin:0 0;overflow:hidden}
+.folio-device .phone{transform:scale(var(--shot-scale,var(--scale)))}
+.phone .statusbar{height:59px;padding-top:10px}
+.phone .statusbar::after{width:120px;height:34px;margin-left:-60px;top:11px}
+.phone>.screen{padding-top:59px}
+.screen-dialog{padding-left:25px;padding-right:25px}
+.screen-dialog .detail-render,.screen-dialog .detail-shot{width:min(360px,calc(100vw - 90px));margin:15px auto}
+.folio-enlarge{right:18px;bottom:20px}
+/* Physical card collection stays compact and retains all five cards. */
+.five-cards{max-width:900px;margin:0 auto;gap:24px;align-items:start}
+.five-cards figure{width:100%;max-width:155px;justify-self:center}
+.five-cards figcaption{font-size:12px;line-height:1.5;margin-top:12px}
+@media(max-width:760px){
+ .folio-device{padding:12px}
+ .five-cards{max-width:310px;gap:24px 20px}
+ .five-cards figure,.five-cards figure:last-child{max-width:135px}
+ .five-cards figcaption{font-size:11px}
+ .screen-dialog{padding-left:20px;padding-right:20px}
+}
