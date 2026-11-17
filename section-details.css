@@ -13,3 +13,5 @@
 @media(max-width:760px){.physical-evidence>figure{height:350px;min-height:0}.physical-frames{gap:20px}.physical-frames .folio-device{max-width:none}.inn-close-photo{gap:18px}}
 
 .workshop-scene-caption{position:absolute;left:22px;bottom:18px;padding:7px 12px;background:#193e37de;color:#fff;font:11px/1.5 var(--folio-font);border-radius:20px;z-index:1}
+
+.inn-handover{display:grid;grid-template-columns:1.5fr 1fr;gap:50px;align-items:center;padding:35px 0 55px}.inn-handover figure{margin:0}.inn-handover img{display:block;width:100%;height:auto;border-radius:3px}.inn-handover figcaption{font:12px/1.6 var(--folio-font);color:#b9c6b3;margin-top:12px}.inn-handover .folio-heading{margin:22px 0}.inn-handover .folio-copy{font-size:16px;line-height:1.8}@media(max-width:760px){.inn-handover{grid-template-columns:1fr;gap:25px;padding:25px 0 40px}.inn-handover .folio-heading{margin:16px 0}}
