@@ -1,0 +1,19 @@
+/* Clean first screen: one full-viewport page with the name as the focus. */
+.hero{min-height:calc(100vh - 94px);min-height:calc(100svh - 94px);display:flex;flex-direction:column;justify-content:center;padding:48px 4.5% 40px;box-sizing:border-box;
+ background:linear-gradient(118deg,transparent 0 74%,var(--cyan) 74% 79%,transparent 79% 81%,var(--yellow) 81% 83%,transparent 83%)}
+.hero-role{font-size:13px;letter-spacing:2px;font-weight:700;text-transform:uppercase;color:var(--ink);position:relative;z-index:1}
+.hero h1.hero-name{font-family:var(--display);font-weight:400;font-size:clamp(76px,13.5vw,220px);line-height:.95;letter-spacing:-.03em;padding:22px 0 0;margin:0;color:var(--ink);position:relative;z-index:1}
+.hero h1.hero-name em{font-style:normal;color:var(--pink);-webkit-text-stroke:4px var(--ink);paint-order:stroke fill;text-shadow:8px 8px 0 var(--yellow);transition:none}
+.hero h1.hero-name:hover em{transform:none;color:var(--pink)}
+.hero-aka{font-family:var(--display);font-size:clamp(26px,3.4vw,52px);line-height:1.1;margin-top:22px;color:var(--ink);position:relative;z-index:1}
+.hero-aka b{font-weight:400;color:var(--cyan);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill}
+.hero-foot{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:56px;position:relative;z-index:1}
+.hero-foot .profile-links{margin:0}
+.hero-foot .circle-link{position:static;margin:0;flex:none;animation:none}
+@media(max-width:800px){
+ .hero{min-height:calc(100svh - 80px);padding:32px 4.5% 28px;background:linear-gradient(62deg,transparent 0 80%,var(--cyan) 80% 86%,transparent 86% 88%,var(--yellow) 88% 91%,transparent 91%)}
+ .hero h1.hero-name{font-size:clamp(64px,21vw,120px);line-height:1}
+ .hero h1.hero-name em{display:block;-webkit-text-stroke:3px var(--ink);text-shadow:5px 5px 0 var(--yellow)}
+ .hero-role{font-size:11px;letter-spacing:1.4px;line-height:1.6}
+ .hero-foot{margin-top:40px;align-items:flex-end}
+}
