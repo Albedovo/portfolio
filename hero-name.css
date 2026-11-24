@@ -1,6 +1,6 @@
 /* First screen: one quiet full-viewport page. The name leads; the rhythm lane closes it. */
 .hero{min-height:calc(100vh - 94px);min-height:calc(100svh - 94px);display:flex;flex-direction:column;padding:28px 4.5% 44px;box-sizing:border-box;
- background:linear-gradient(118deg,transparent 0 74%,var(--cyan) 74% 79%,transparent 79% 81%,var(--yellow) 81% 83%,transparent 83%)}
+ background:linear-gradient(118deg,transparent 0 69%,var(--cyan) 69% 78%,transparent 78% 80.5%,var(--yellow) 80.5% 85%,transparent 85%)}
 .hero-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink)}
 .hero-meta span{position:relative;z-index:1}.hero-meta span:nth-child(2){text-align:center}.hero-meta span:last-child{text-align:right}
 .hero-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 0}
@@ -26,7 +26,7 @@
 .fever .hero .beat-lane{animation:none;box-shadow:0 0 0 2px var(--pink)}
 
 @media(max-width:800px){
- .hero{min-height:calc(100svh - 80px);padding:20px 4.5% 28px;background:linear-gradient(62deg,transparent 0 80%,var(--cyan) 80% 86%,transparent 86% 88%,var(--yellow) 88% 91%,transparent 91%)}
+ .hero{min-height:calc(100svh - 80px);padding:20px 4.5% 28px;background:linear-gradient(62deg,transparent 0 75%,var(--cyan) 75% 85%,transparent 85% 87.5%,var(--yellow) 87.5% 93%,transparent 93%)}
  .hero-meta{grid-template-columns:1fr auto;font-size:10px;letter-spacing:.14em}
  .hero-meta span:nth-child(2){display:none}
  .hero h1.hero-name{font-size:clamp(48px,14vw,72px);white-space:normal;line-height:.98}
