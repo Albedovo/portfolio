@@ -127,3 +127,16 @@ if(calm)lane.classList.add('still');
 nextStep=Math.ceil((songTime()+TRAVEL)/STEP);requestAnimationFrame(frame);
 lane.addEventListener('pointerdown',e=>{if(e.button)return;tryHit()});
 lane.addEventListener('keydown',e=>{if(![' ','f','j','F','J'].includes(e.key))return;e.preventDefault();if(!e.repeat)tryHit()});
+
+// Hero name: each letter is a key. Hovering lifts it and, with sound on, plays a note.
+(()=>{const h=$('.hero-name');if(!h)return;h.setAttribute('aria-label','Xiwen Yan');let i=0;
+ const wrap=node=>[...node.childNodes].forEach(n=>{if(n.nodeType===3){const f=document.createDocumentFragment();[...n.textContent].forEach(c=>{if(c===' '){f.append(' ');return}const s=document.createElement('span');s.className='ch';s.style.setProperty('--i',i++);s.textContent=c;s.setAttribute('aria-hidden','true');f.append(s)});n.replaceWith(f)}else wrap(n)});
+ // Splitting into inline-blocks drops the font's kerning (Y–a especially), so put each letter back where it was.
+ const kern=()=>{const chars=[...h.querySelectorAll('.ch')],c=document.createElement('canvas').getContext('2d'),cs=getComputedStyle(h);chars.forEach(s=>s.style.marginLeft='');
+  c.font=`${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;c.fontKerning='normal';
+  for(let k=1;k<chars.length;k++){const a=chars[k-1],b=chars[k];if(a.parentNode!==b.parentNode&&!(a.parentNode.tagName==='EM'&&b.parentNode.tagName==='I'))continue;
+   const pair=c.measureText(a.textContent+b.textContent).width,solo=c.measureText(a.textContent).width+c.measureText(b.textContent).width;
+   if(Math.abs(pair-solo)>.5)b.style.marginLeft=(pair-solo)+'px'}};
+ wrap(h);document.fonts?.ready.then(kern);addEventListener('resize',()=>{clearTimeout(h._k);h._k=setTimeout(kern,150)});
+ h.querySelectorAll('.ch').forEach((s,k)=>s.addEventListener('pointerenter',()=>{if(calm)return;s.classList.remove('hop');void s.offsetWidth;s.classList.add('hop');hitSound(k%4)}));
+ h.addEventListener('animationend',e=>e.target.classList.remove('hop'));})();
