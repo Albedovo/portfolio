@@ -1,19 +1,36 @@
-/* Clean first screen: one full-viewport page with the name as the focus. */
-.hero{min-height:calc(100vh - 94px);min-height:calc(100svh - 94px);display:flex;flex-direction:column;justify-content:center;padding:48px 4.5% 40px;box-sizing:border-box;
- background:linear-gradient(118deg,transparent 0 74%,var(--cyan) 74% 79%,transparent 79% 81%,var(--yellow) 81% 83%,transparent 83%)}
-.hero-role{font-size:13px;letter-spacing:2px;font-weight:700;text-transform:uppercase;color:var(--ink);position:relative;z-index:1}
-.hero h1.hero-name{font-family:var(--display);font-weight:400;font-size:clamp(76px,13.5vw,220px);line-height:.95;letter-spacing:-.03em;padding:22px 0 0;margin:0;color:var(--ink);position:relative;z-index:1}
-.hero h1.hero-name em{font-style:normal;color:var(--pink);-webkit-text-stroke:4px var(--ink);paint-order:stroke fill;text-shadow:8px 8px 0 var(--yellow);transition:none}
-.hero h1.hero-name:hover em{transform:none;color:var(--pink)}
-.hero-aka{font-family:var(--display);font-size:clamp(26px,3.4vw,52px);line-height:1.1;margin-top:22px;color:var(--ink);position:relative;z-index:1}
-.hero-aka b{font-weight:400;color:var(--cyan);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill}
-.hero-foot{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:56px;position:relative;z-index:1}
-.hero-foot .profile-links{margin:0}
-.hero-foot .circle-link{position:static;margin:0;flex:none;animation:none}
+/* First screen: one quiet full-viewport page. The name leads; the rhythm lane closes it. */
+.hero{min-height:calc(100vh - 94px);min-height:calc(100svh - 94px);display:flex;flex-direction:column;padding:28px 4.5% 44px;box-sizing:border-box;background:none}
+.hero-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ink)}
+.hero-meta span:nth-child(2){text-align:center}.hero-meta span:last-child{text-align:right}
+.hero-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 0}
+.hero h1.hero-name{font-family:var(--display);font-weight:400;font-size:clamp(72px,14.2vw,236px);line-height:.9;letter-spacing:-.045em;margin:0 0 0 -.04em;padding:0;color:var(--ink);white-space:nowrap}
+.hero h1.hero-name i{font-style:normal;color:var(--pink)}
+.hero-sub{display:flex;justify-content:space-between;align-items:baseline;gap:24px;margin-top:clamp(20px,2.6vw,40px);padding-top:18px;border-top:1.5px solid var(--ink)}
+.hero-aka{font-size:clamp(16px,1.5vw,22px);color:var(--ink);letter-spacing:-.01em}
+.hero-aka b{font-family:var(--display);font-weight:400;color:var(--pink)}
+.hero-links{display:flex;gap:28px;flex-wrap:wrap}
+.hero-links a{font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--ink);text-decoration:none;background:linear-gradient(var(--pink),var(--pink)) 0 100%/0 2px no-repeat;padding-bottom:3px;transition:background-size .25s}
+.hero-links a:hover{background-size:100% 2px}
+
+/* Rhythm lane, toned down: flat ink track, thin rings, no drop shadows. */
+.hero .beat-lane{height:60px;margin:0;border:0;border-radius:999px;background:var(--ink);box-shadow:none}
+.hero .beat-lane:before{height:1px;margin-top:0;background:repeating-linear-gradient(90deg,#ffffff40 0 6px,transparent 6px 14px)}
+.hero .hit-ring{left:30px;width:40px;height:40px;margin-top:-20px;border-width:2px;box-shadow:0 0 0 6px #ffe14a1f}
+.hero .note{width:32px;height:32px;margin-top:-16px;margin-left:-16px;border-width:0;font-size:14px;box-shadow:none}
+.hero .judge{left:88px;font-size:15px}
+.hero .lane-label{display:block;top:50%;transform:translateY(-50%);right:28px;font-size:10px;letter-spacing:.22em;color:#ffffff80;background:var(--ink);padding:4px 0 4px 12px}
+.hero .combo{right:28px;top:auto;bottom:6px;font-size:10px;letter-spacing:.08em;color:#ffffff;opacity:0}
+.hero .beat-lane:hover .combo,.hero .beat-lane:focus .combo{opacity:.7}
+.fever .hero .beat-lane{animation:none;box-shadow:0 0 0 2px var(--pink)}
+
 @media(max-width:800px){
- .hero{min-height:calc(100svh - 80px);padding:32px 4.5% 28px;background:linear-gradient(62deg,transparent 0 80%,var(--cyan) 80% 86%,transparent 86% 88%,var(--yellow) 88% 91%,transparent 91%)}
- .hero h1.hero-name{font-size:clamp(64px,21vw,120px);line-height:1}
- .hero h1.hero-name em{display:block;-webkit-text-stroke:3px var(--ink);text-shadow:5px 5px 0 var(--yellow)}
- .hero-role{font-size:11px;letter-spacing:1.4px;line-height:1.6}
- .hero-foot{margin-top:40px;align-items:flex-end}
+ .hero{min-height:calc(100svh - 80px);padding:20px 4.5% 28px}
+ .hero-meta{grid-template-columns:1fr auto;font-size:10px;letter-spacing:.14em}
+ .hero-meta span:nth-child(2){display:none}
+ .hero h1.hero-name{font-size:clamp(64px,23vw,150px);white-space:normal;line-height:.92}
+ .hero h1.hero-name{word-spacing:100vw}
+ .hero-sub{flex-direction:column;gap:14px}
+ .hero-links{gap:18px}
+ .hero .lane-label{display:none}
+ .hero .beat-lane{height:56px}
 }
